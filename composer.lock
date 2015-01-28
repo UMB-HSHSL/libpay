@@ -1,0 +1,64 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "1c1c5ecda0f295ef81c130de182be0a6",
+    "packages": [
+        {
+            "name": "stripe/stripe-php",
+            "version": "v1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "5eba614baf4adefffdd59d196679a16d7baf70da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/5eba614baf4adefffdd59d196679a16d7baf70da",
+                "reference": "5eba614baf4adefffdd59d196679a16d7baf70da",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "vierbergenlars/simpletest": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/Stripe/"
+                ]
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "time": "2013-04-12 18:56:41"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
