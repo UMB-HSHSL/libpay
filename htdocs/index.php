@@ -1,609 +1,292 @@
 <?php
-require '../vendor/autoload.php';
-require '../config/credentials.php';
-?>
+/**
+ * CodeIgniter
+ *
+ * An open source application development framework for PHP
+ *
+ * This content is released under the MIT License (MIT)
+ *
+ * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @package	CodeIgniter
+ * @author	EllisLab Dev Team
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @license	http://opensource.org/licenses/MIT	MIT License
+ * @link	http://codeigniter.com
+ * @since	Version 1.0.0
+ * @filesource
+ */
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Secure Payment Form for UMB HS/HSL</title>
-<link rel="stylesheet" href="css/bootstrap-min.css">
-<link rel="stylesheet" href="css/bootstrap-formhelpers-min.css" media="screen">
-<link rel="stylesheet" href="css/bootstrapValidator-min.css"/>
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
-<link rel="stylesheet" href="css/bootstrap-side-notes.css" />
-<style type="text/css">
-.col-centered {
-    display:inline-block;
-    float:none;
-    text-align:left;
-    margin-right:-4px;
-}
-.row-centered {
-    margin-left: 9px;
-    margin-right: 9px;
-}
-</style>
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="js/bootstrap-min.js"></script>
-<script src="js/bootstrap-formhelpers-min.js"></script>
-<script type="text/javascript" src="js/bootstrapValidator-min.js"></script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#payment-form').bootstrapValidator({
-        message: 'This value is not valid',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        submitHandler: function(validator, form, submitButton) {
-        var chargeAmount = 3000;
-        // amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
-        // createToken returns immediately - the supplied callback submits the form if there are no errors
-        Stripe.createToken({
-              number: $('.card-number').val(),
-              cvc: $('.card-cvc').val(),
-              exp_month: $('.card-expiry-month').val(),
-              exp_year: $('.card-expiry-year').val(),
-              name: $('.card-holder-name').val(),
-              address_line1: $('.address').val(),
-              address_city: $('.city').val(),
-              address_zip: $('.zip').val(),
-              address_state: $('.state').val(),
-              address_country: $('.country').val()
-            },
-            chargeAmount,
-            stripeResponseHandler
-        );
-          return false; // submit from callback
-        }, //submithandler
-        fields: {
-
-            hshsl_amount_dollar: {
-                validators: {
-                    digits: {
-                        message: 'The amount (dollar) can contain digits only'
-                    },
-                    notEmpty: {
-                        message: 'The amount (dollar) is required'
-                    }
-                }
-            },
-            hshsl_amount_cents: {
-                validators: {
-                    digits: {
-                        message: 'The amount (cents) can contain digits only'
-                    },
-                    notEmpty: {
-                        message: 'The amount (cents) is required'
-                    }
-                }
-            },
-            patron_name: {
-                validators: {
-                    notEmpty: {
-                        message: 'The Patron Name is required and cannot be empty'
-                    }
-              }
-            },
-
-            umid: {
-                validators: {
-                    notEmpty: {
-                        message: 'The UMID is required and can\'t be empty'
-                    },
-                    stringLength: {
-                        min: 3,
-                        max: 30,
-                        message: 'The card holder name must be more than 3 and less than 20 characters long'
-                    }
-                }
-            },
-
-            phone: {
-                validators: {
-                    digits: {
-                        message: 'The phone number can contain digits only'
-                    },
-                    notEmpty: {
-                        message: 'The phone number is required'
-                    }
-                }
-            },
-
-            street: {
-                validators: {
-                    notEmpty: {
-                        message: 'The street is required and cannot be empty'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 96,
-                        message: 'The street must be more than 6 and less than 96 characters long'
-                    }
-                }
-            },
-            city: {
-                validators: {
-                    notEmpty: {
-                        message: 'The city is required and cannot be empty'
-                    }
-                }
-            },
-            state: {
-                validators: {
-                    notEmpty: {
-                        message: 'The state is required and cannot be empty'
-                    }
-                }
-            },
-         zip: {
-                validators: {
-                    notEmpty: {
-                        message: 'The zip is required and cannot be empty'
-                    },
-                    stringLength: {
-                        min: 3,
-                        max: 9,
-                        message: 'The zip must be more than 3 and less than 9 characters long'
-                    }
-                }
-            },
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: 'The email address is required and can\'t be empty'
-                    },
-                    emailAddress: {
-                        message: 'The input is not a valid email address'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 65,
-                        message: 'The email must be more than 6 and less than 65 characters long'
-                    }
-                }
-            },
-            cardholdername: {
-                validators: {
-                    notEmpty: {
-                        message: 'The card holder name is required and can\'t be empty'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 70,
-                        message: 'The card holder name must be more than 6 and less than 70 characters long'
-                    }
-                }
-            },
-            cardnumber: {
-                selector: '#cardnumber',
-                validators: {
-                    notEmpty: {
-                        message: 'The credit card number is required and can\'t be empty'
-                    },
-                    creditCard: {
-                        message: 'The credit card number is invalid'
-                    },
-                }
-            },
-            expMonth: {
-                selector: '[data-stripe="exp-month"]',
-                validators: {
-                    notEmpty: {
-                        message: 'The expiration month is required'
-                    },
-                    digits: {
-                        message: 'The expiration month can contain digits only'
-                    },
-                    callback: {
-                        message: 'Expired',
-                        callback: function(value, validator) {
-                            value = parseInt(value, 10);
-                            var year         = validator.getFieldElements('expYear').val(),
-                                currentMonth = new Date().getMonth() + 1,
-                                currentYear  = new Date().getFullYear();
-                            if (value < 0 || value > 12) {
-                                return false;
-                            }
-                            if (year == '') {
-                                return true;
-                            }
-                            year = parseInt(year, 10);
-                            if (year > currentYear || (year == currentYear && value > currentMonth)) {
-                                validator.updateStatus('expYear', 'VALID');
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            },
-            expYear: {
-                selector: '[data-stripe="exp-year"]',
-                validators: {
-                    notEmpty: {
-                        message: 'The expiration year is required'
-                    },
-                    digits: {
-                        message: 'The expiration year can contain digits only'
-                    },
-                    callback: {
-                        message: 'Expired',
-                        callback: function(value, validator) {
-                            value = parseInt(value, 10);
-                            var month        = validator.getFieldElements('expMonth').val(),
-                                currentMonth = new Date().getMonth() + 1,
-                                currentYear  = new Date().getFullYear();
-                            if (value < currentYear || value > currentYear + 100) {
-                                return false;
-                            }
-                            if (month == '') {
-                                return false;
-                            }
-                            month = parseInt(month, 10);
-                            if (value > currentYear || (value == currentYear && month > currentMonth)) {
-                                validator.updateStatus('expMonth', 'VALID');
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            },
-            cvv: {
-                selector: '#cvv',
-        validators: {
-            notEmpty: {
-                message: 'The cvv is required and can\'t be empty'
-            },
-            cvv: {
-                message: 'The value is not a valid CVV',
-                creditCardField: 'cardnumber'
-            }
-        }//validators
-      }, //cvv
-    } //fields
-  }); //bootstrapValidator
-}); //doc ready
-</script>
-
-<script type="text/javascript">
-            // this identifies your website in the createToken call below
-            Stripe.setPublishableKey('<?php echo STRIPE_PUBLIC_KEY ?>');
-            function stripeResponseHandler(status, response) {
-                if (response.error) {
-                    // re-enable the submit button
-                    $('.submit-button').removeAttr("disabled");
-
-                    // show hidden div
-                    document.getElementById('a_x200').style.display = 'block';
-
-                    // show the errors on the form
-                    $(".payment-errors").html(response.error.message);
-                }
-                else {
-                    var form$ = $("#payment-form");
-                    // token contains id, last4, and card type
-                    var token = response['id'];
-                    // insert the token into the form so it gets submitted to the server
-                    form$.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
-                    // and submit
-                    form$.get(0).submit();
-                }
-            }
-</script>
-</head>
-<body>
-
-<form action="" method="POST" id="payment-form" class="form-horizontal">
-  <div class="row row-centered">
-  <div class="col-md-4 col-md-offset-4">
-  <div class="page-header">
-    <h2 class="gdfg">Secure Payment Form for UMB HS/HSL</h2>
-  </div>
-  <noscript>
-  <div class="bs-callout bs-callout-danger">
-    <h4>JavaScript is not enabled!</h4>
-    <p>This payment form requires your browser to have JavaScript enabled. Please activate JavaScript and reload this page. Check <a href="http://enable-javascript.com" target="_blank">enable-javascript.com</a> for more informations.</p>
-  </div>
-  </noscript>
-  <div class="alert alert-danger" id="a_x200" style="display: none;">
-    <strong>Error!</strong>
-    <span class="payment-errors"></span>
-  </div>
-
-
-<!-- PAYMENT PROCESSING -->
-<?php
-
-if ($_POST) {
-  Stripe::setApiKey(STRIPE_SECRET_KEY);
-  $error = '';
-  $success = '';
-
-  try {
-  	if (empty($_POST['hshsl_amount_dollar']) || empty($_POST['hshsl_amount_cents']) || empty($_POST['hshsl_category']) || empty($_POST['patron_name']) || empty($_POST['street']) || empty($_POST['city']) || empty($_POST['zip'])) {
-        throw new Exception("Fill out all required fields.");
-    }
-    if (!isset($_POST['stripeToken'])) {
-        throw new Exception("The Stripe Token was not generated correctly");
-    }
-        Stripe_Charge::create(array("amount" => (($_POST['hshsl_amount_dollar'])*100)+($_POST['hshsl_amount_cents']),
-                                "currency" => "usd",
-                                "card" => $_POST['stripeToken'],
-								                "description" => $_POST['hshsl_category'],
-                                "receipt_email" => $_POST['email'],
-                                ));
-        error_log($_POST['email']);
-        $success = '<div class="alert alert-success">
-<strong>Success!</strong> Your payment of $'.$_POST['hshsl_amount_dollar'].'.'.$_POST['hshsl_amount_cents'].' was successful. The confirmation e-mail will be sent to '.$_POST['email'].'.</div>'.$_POST['email'];
 /*
-    $to = $_POST["email"];
-    $receipt_to = $_POST["email"]; // sender
-    $subject = "HSHSL Payment Confirmation";
-    $hshsl_email = "cats@hshsl.umaryland.edu";
-    $to = "bkim@hshsl.umaryland.edu";
-    $message ="Thank you for your payment. Please retain this email as the receipt of your payment.";
-    $message.="\n\nYour Name: ".$_POST['patron_name'];
-    $message.="\nYour UMID: ".$_POST['umid'];
-    $message.="\nAmount: $";
-    $message.=$_POST['hshsl_amount_dollar'].".".$_POST['hshsl_amount_cents'];
-    $message.="\nCategory: ".$_POST['hshsl_category'];
-    $message.="\nInvoice No. (If Applicable): ".$_POST['invoice_no'];
-    $message.="\nSpecial Instructions. (If Applicable): ".$_POST['instruction'];
-    // message lines should not exceed 70 characters (PHP rule), so wrap it
-    $message = wordwrap($message, 70);
-    mail($to,$subject,$message,"From: $hshsl_email\n");
-*/
-// $headers = "From: $hshsl_email\n";
-// mail($to,$subject,$message,$headers);
+ *---------------------------------------------------------------
+ * APPLICATION ENVIRONMENT
+ *---------------------------------------------------------------
+ *
+ * You can load different configurations depending on your
+ * current environment. Setting the environment also influences
+ * things like logging and error reporting.
+ *
+ * This can be set to anything, but default usage is:
+ *
+ *     development
+ *     testing
+ *     production
+ *
+ * NOTE: If you change these, also change the error_reporting() code below
+ */
+	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+
+/*
+ *---------------------------------------------------------------
+ * ERROR REPORTING
+ *---------------------------------------------------------------
+ *
+ * Different environments will require different levels of error reporting.
+ * By default development will show errors but testing and live will hide them.
+ */
+switch (ENVIRONMENT)
+{
+	case 'development':
+		error_reporting(-1);
+		ini_set('display_errors', 1);
+	break;
+
+	case 'testing':
+	case 'production':
+		ini_set('display_errors', 0);
+		if (version_compare(PHP_VERSION, '5.3', '>='))
+		{
+			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+		}
+		else
+		{
+			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+		}
+	break;
+
+	default:
+		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+		echo 'The application environment is not set correctly.';
+		exit(1); // EXIT_ERROR
+}
+
+/*
+ *---------------------------------------------------------------
+ * SYSTEM FOLDER NAME
+ *---------------------------------------------------------------
+ *
+ * This variable must contain the name of your "system" folder.
+ * Include the path if the folder is not in the same directory
+ * as this file.
+ */
+	$system_path = '../system';
+
+/*
+ *---------------------------------------------------------------
+ * APPLICATION FOLDER NAME
+ *---------------------------------------------------------------
+ *
+ * If you want this front controller to use a different "application"
+ * folder than the default one you can set its name here. The folder
+ * can also be renamed or relocated anywhere on your server. If
+ * you do, use a full server path. For more info please see the user guide:
+ * http://codeigniter.com/user_guide/general/managing_apps.html
+ *
+ * NO TRAILING SLASH!
+ */
+	$application_folder = '../application';
+
+/*
+ *---------------------------------------------------------------
+ * VIEW FOLDER NAME
+ *---------------------------------------------------------------
+ *
+ * If you want to move the view folder out of the application
+ * folder set the path to the folder here. The folder can be renamed
+ * and relocated anywhere on your server. If blank, it will default
+ * to the standard location inside your application folder. If you
+ * do move this, use the full server path to this folder.
+ *
+ * NO TRAILING SLASH!
+ */
+	$view_folder = '';
 
 
-  }//try
-  catch (Exception $e) {
-    $error = '<div class="alert alert-danger"><strong>Error!</strong> '.$e->getMessage().'  </div>';
-  }//catch
+/*
+ * --------------------------------------------------------------------
+ * DEFAULT CONTROLLER
+ * --------------------------------------------------------------------
+ *
+ * Normally you will set your default controller in the routes.php file.
+ * You can, however, force a custom routing by hard-coding a
+ * specific controller class/function here. For most applications, you
+ * WILL NOT set your routing here, but it's an option for those
+ * special instances where you might want to override the standard
+ * routing in a specific front controller that shares a common CI installation.
+ *
+ * IMPORTANT: If you set the routing here, NO OTHER controller will be
+ * callable. In essence, this preference limits your application to ONE
+ * specific controller. Leave the function name blank if you need
+ * to call functions dynamically via the URI.
+ *
+ * Un-comment the $routing array below to use this feature
+ */
+	// The directory name, relative to the "controllers" folder.  Leave blank
+	// if your controller is not in a sub-folder within the "controllers" folder
+	// $routing['directory'] = '';
 
-// SEND CONFIRMATION EMAIL TO PATRON IF CHARGE SUCCEEDED.
-?>
+	// The controller class file name.  Example:  mycontroller
+	// $routing['controller'] = '';
 
-  <span class="payment-success">
-  <?php echo $success ?>
-  <?php echo $error ?>
-  </span>
-<?php
-} //if post
-
-//DISPLAY FORM IF NOT SUBMITTED
-else{
-?>
-
-<!-- PAYMENT FORM -->
-  <fieldset>
-  <!-- Form Name -->
-  <legend>Patron and Payment Details</legend>
-
-    <!-- Fee Category-->
-    <div class="form-group">
-      <label class="col-sm-4 control-label" for="textinput">Fee Category</label>
-      <div class="col-sm-6">
-          <select name="hshsl_category">
-            <option value="Library Fines" selected="selected">Library Fines</option>
-            <option value="Classroom Reservation">Classroom Reservation</option>
-            <option value="Invoice">Invoice/Membership</option>
-            <option value="Inter-Library Loan">Inter-Library Loan</option>
-            <option value="Other">Other</option>
-          </select>
-      </div>
-    </div>
-
-  <!-- Invoice number -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Invoice No.</label>
-    <div class="col-sm-6">
-      <input type="text" name="invoice_no" placeholder="If applicable" class="invoice form-control">
-    </div>
-  </div>
-
-  <!-- Amount -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Payment Amount</label>
-    <div class="col-sm-6">
-        <div class="form-inline">
-            $ <input type="text" size="3" name="hshsl_amount_dollar" placeholder="" class="amount form-control">
-            <span>.</span>
-            <input type="text" size="1" maxlength="2" name="hshsl_amount_cents" placeholder="" class="amount form-control">
-        </div>
-    </div>
-  </div>
-
-  <!-- Patron Name -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Patron Name</label>
-    <div class="col-sm-6">
-      <input type="text" name="patron_name" placeholder="Patron Name" class="patron_name form-control">
-    </div>
-  </div>
-
-  <!-- UMID -->
-  <!-- As of July 15, 2013, the UMID may contain letters, numbers and the 3 following special characters
-(underscore, period and/or dash). The UMID must be between 3 and 20 characters in length. -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Patron UMID</label>
-    <div class="col-sm-6">
-      <input type="text" name="umid" placeholder="umid" class="umid form-control">
-    </div>
-  </div>
+	// The controller function you wish to be called.
+	// $routing['function']	= '';
 
 
-  <!-- Phone -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Phone</label>
-    <div class="col-sm-6">
-      <input type="text" name="phone" maxlength="12" placeholder="phone (111-222-3333)" class="phone form-control">
-    </div>
-  </div>
-
-  <!-- Email -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">E-mail</label>
-    <div class="col-sm-6">
-      <input type="text" name="email" maxlength="65" placeholder="Email" class="email form-control">
-    </div>
-  </div>
-
-   <!-- Instruction -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Special Instructions</label>
-    <div class="col-sm-6">
-      <textarea name="instruction" placeholder="Special Instructions" class="instruction form-control"></textarea>
-    </div>
-  </div>
-  </fieldset>
+/*
+ * -------------------------------------------------------------------
+ *  CUSTOM CONFIG VALUES
+ * -------------------------------------------------------------------
+ *
+ * The $assign_to_config array below will be passed dynamically to the
+ * config class when initialized. This allows you to set custom config
+ * items or override any default config values found in the config.php file.
+ * This can be handy as it permits you to share one application between
+ * multiple front controller files, with each file containing different
+ * config values.
+ *
+ * Un-comment the $assign_to_config array below to use this feature
+ */
+	// $assign_to_config['name_of_config_item'] = 'value of config item';
 
 
-  <fieldset>
-    <legend>Billing Address</legend>
 
-  <!-- Street -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Street</label>
-    <div class="col-sm-6">
-      <input type="text" name="street" placeholder="Street" class="address form-control">
-    </div>
-  </div>
+// --------------------------------------------------------------------
+// END OF USER CONFIGURABLE SETTINGS.  DO NOT EDIT BELOW THIS LINE
+// --------------------------------------------------------------------
 
-  <!-- City -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">City</label>
-    <div class="col-sm-6">
-      <input type="text" name="city" placeholder="City" class="city form-control">
-    </div>
-  </div>
+/*
+ * ---------------------------------------------------------------
+ *  Resolve the system path for increased reliability
+ * ---------------------------------------------------------------
+ */
 
-  <!-- State -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">State</label>
-    <div class="col-sm-6">
-      <input type="text" name="state" maxlength="65" placeholder="State (e.g. MD)" class="state form-control">
-    </div>
-  </div>
+	// Set the current directory correctly for CLI requests
+	if (defined('STDIN'))
+	{
+		chdir(dirname(__FILE__));
+	}
 
-  <!-- Postcal Code -->
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Postal Code</label>
-    <div class="col-sm-6">
-      <input type="text" name="zip" maxlength="9" placeholder="Postal Code" class="zip form-control">
-    </div>
-  </div>
+	if (($_temp = realpath($system_path)) !== FALSE)
+	{
+		$system_path = $_temp.'/';
+	}
+	else
+	{
+		// Ensure there's a trailing slash
+		$system_path = rtrim($system_path, '/').'/';
+	}
 
-  <!-- Country
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Country</label>
-    <div class="col-sm-6">
-      <div class="country bfh-selectbox bfh-countries" name="country" placeholder="Select Country" data-flags="true" data-filter="true"> </div>
-    </div>
-  </div>
--->
-   </fieldset>
+	// Is the system path correct?
+	if ( ! is_dir($system_path))
+	{
+		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+		echo 'Your system folder path does not appear to be set correctly. Please open the following file and correct this: '.pathinfo(__FILE__, PATHINFO_BASENAME);
+		exit(3); // EXIT_CONFIG
+	}
 
-  <fieldset>
-    <legend>Credit/Debit Card Details</legend>
+/*
+ * -------------------------------------------------------------------
+ *  Now that we know the path, set the main path constants
+ * -------------------------------------------------------------------
+ */
+	// The name of THIS file
+	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
-    <!-- Card Holder Name -->
-    <div class="form-group">
-      <label class="col-sm-4 control-label"  for="textinput">Card Holder's Name</label>
-      <div class="col-sm-6">
-        <input type="text" name="cardholdername" maxlength="70" placeholder="Card Holder Name" class="card-holder-name form-control">
-      </div>
-    </div>
+	// Path to the system folder
+	define('BASEPATH', str_replace('\\', '/', $system_path));
 
-    <!-- Card Number -->
-    <div class="form-group">
-      <label class="col-sm-4 control-label" for="textinput">Card Number</label>
-      <div class="col-sm-6">
-        <input type="text" id="cardnumber" maxlength="19" placeholder="Card Number" class="card-number form-control">
-      </div>
-    </div>
+	// Path to the front controller (this file)
+	define('FCPATH', str_replace(SELF, '', __FILE__));
 
-    <!-- Expiry-->
-    <div class="form-group">
-      <label class="col-sm-4 control-label" for="textinput">Card Expiry Date</label>
-      <div class="col-sm-6">
-        <div class="form-inline">
-          <select name="select2" data-stripe="exp-month" class="card-expiry-month stripe-sensitive required form-control">
-            <option value="01" selected="selected">01</option>
-            <option value="02">02</option>
-            <option value="03">03</option>
-            <option value="04">04</option>
-            <option value="05">05</option>
-            <option value="06">06</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-          <span> / </span>
-          <select name="select2" data-stripe="exp-year" class="card-expiry-year stripe-sensitive required form-control">
-          </select>
-          <script type="text/javascript">
-            var select = $(".card-expiry-year"),
-            year = new Date().getFullYear();
+	// Name of the "system folder"
+	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
-            for (var i = 0; i < 12; i++) {
-                select.append($("<option value='"+(i + year)+"' "+(i === 0 ? "selected" : "")+">"+(i + year)+"</option>"))
-            }
-        </script>
-        </div>
-      </div>
-    </div>
+	// The path to the "application" folder
+	if (is_dir($application_folder))
+	{
+		if (($_temp = realpath($application_folder)) !== FALSE)
+		{
+			$application_folder = $_temp;
+		}
 
-    <!-- CVV -->
-    <div class="form-group">
-      <label class="col-sm-4 control-label" for="textinput">CVV/CVV2</label>
-      <div class="col-sm-3">
-        <input type="text" id="cvv" placeholder="CVV" maxlength="4" class="card-cvc form-control">
-      </div>
-    </div>
+		define('APPPATH', $application_folder.DIRECTORY_SEPARATOR);
+	}
+	else
+	{
+		if ( ! is_dir(BASEPATH.$application_folder.DIRECTORY_SEPARATOR))
+		{
+			header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+			echo 'Your application folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
+			exit(3); // EXIT_CONFIG
+		}
 
-    <!-- Important notice -->
-    <div class="form-group">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        <h3 class="panel-title">Important notice</h3>
-      </div>
-      <div class="panel-body">
-        <p>Your card will be charged for the amount you entered after submit.</p>
-        <p>Your account statement will show the following booking text:
-          XXXXXXX </p>
-      </div>
-    </div>
+		define('APPPATH', BASEPATH.$application_folder.DIRECTORY_SEPARATOR);
+	}
 
-    <!-- Submit -->
-    <div class="control-group">
-      <div class="controls">
-        <center>
-          <button class="btn btn-success" type="submit">Pay Now</button>
-        </center>
-      </div>
-    </div>
-  </fieldset>
+	// The path to the "views" folder
+	if ( ! is_dir($view_folder))
+	{
+		if ( ! empty($view_folder) && is_dir(APPPATH.$view_folder.DIRECTORY_SEPARATOR))
+		{
+			$view_folder = APPPATH.$view_folder;
+		}
+		elseif ( ! is_dir(APPPATH.'views'.DIRECTORY_SEPARATOR))
+		{
+			header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+			echo 'Your view folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
+			exit(3); // EXIT_CONFIG
+		}
+		else
+		{
+			$view_folder = APPPATH.'views';
+		}
+	}
 
+	if (($_temp = realpath($view_folder)) !== FALSE)
+	{
+		$view_folder = $_temp.DIRECTORY_SEPARATOR;
+	}
+	else
+	{
+		$view_folder = rtrim($view_folder, '/\\').DIRECTORY_SEPARATOR;
+	}
 
-<?php
-}//else
-?>
+	define('VIEWPATH', $view_folder);
 
-</form>
-</body>
-</html>
+/*
+ * --------------------------------------------------------------------
+ * LOAD THE BOOTSTRAP FILE
+ * --------------------------------------------------------------------
+ *
+ * And away we go...
+ */
+require_once BASEPATH.'core/CodeIgniter.php';
