@@ -19,6 +19,12 @@
 <link rel="stylesheet" href="//www.hshsl.umaryland.edu/bin/css/print.css" type="text/css" media="print" /><!--Print-->
 <link rel="stylesheet" href="//www.hshsl.umaryland.edu/bin/css/libguide.css" type="text/css" /><!--LibGuides-->
 
+<link rel="stylesheet" href="<?php echo base_url() ?>css/bootstrap-formhelpers-min.css" media="screen">
+<link rel="stylesheet" href="<?php echo base_url() ?>css/bootstrapValidator-min.css"/>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+<link rel="stylesheet" href="<?php echo base_url() ?>css/bootstrap-side-notes.css" />
+
+
 <link type="image/vnd.microsoft.icon" rel="shortcut icon" href="//www.hshsl.umaryland.edu/favicon.ico">
 <link type="image/vnd.microsoft.icon" rel="icon" href="//www.hshsl.umaryland.edu/favicon.ico">
 
@@ -478,10 +484,15 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 </script>
 
 
-<link rel="stylesheet" href="<?php echo base_url() ?>css/bootstrap-formhelpers-min.css" media="screen">
-<link rel="stylesheet" href="<?php echo base_url() ?>css/bootstrapValidator-min.css"/>
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
-<link rel="stylesheet" href="<?php echo base_url() ?>css/bootstrap-side-notes.css" />
+
+
+
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>js/bootstrap-min.js"></script>
+<script src="<?php echo base_url() ?>js/bootstrap-formhelpers-min.js"></script>
+<script src="<?php echo base_url() ?>js/bootstrapValidator-min.js"></script>
 
 
 <?php echo $this->template->javascript ?>
