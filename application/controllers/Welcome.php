@@ -1,23 +1,22 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Welcome extends CI_Controller
+require_once APPPATH . '/libraries/Stripe.php';
+
+class Welcome extends MY_Controller
 {
 
     public function index()
     {
-    	error_log('request_method: ' . $this->input->method()); 
-    	
         $this->output->set_header('Cache-Control: max-age=0, no-store, no-cache, must-revalidate, proxy-revalidate, post-check=0, pre-check=0');
         $this->output->set_header('Expires: Tue, 03 Jul 2001 06:00:00 GMT');
         $this->output->set_header('Last-Modified: ' . gmdate(DateTime::RFC2822) . ' GMT');
         
         $this->load->library('form_validation');
-        if ('post' == $this->input->method()) {
-        	error_log('post');
+        if ($this->is_post()) {
             $this->index_handle_post();
+            redirect('welcome/receipt');
         } else {
-        	error_log('get');
         	$this->index_handle_get();
         }
     }
@@ -27,8 +26,11 @@ class Welcome extends CI_Controller
      */
     private function index_handle_get()
     {
+        Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
+        $account = Stripe_Account::retrieve();
+        $this->template->business_name = $account->business_name; 
         $this->template->stripe_public_key = config_item('STRIPE_PUBLIC_KEY');
-
+        
         $this->template->content->view('welcome/index');
         $this->template->foot->view('welcome/index_script');
         $this->template->javascript->add('js/libpay-validation.js');
@@ -88,38 +90,73 @@ class Welcome extends CI_Controller
         
         $this->form_validation->set_rules($rules);
         if ($this->form_validation->run()) {
-        	Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
+            Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
         	$error = '';
         	$success = '';
         	
         	try {
-//        	    if (! isset($_POST['stripeToken'])) {
-//@@        	        throw new Exception("The Stripe Token was not generated correctly");
-//        	    }
+        	    $this->session->set_userdata('stripe_success', false);
+
+        	    $tok = Stripe_Token::create(array(
+        	    "card" => array(
+        	    "number" => "4111111111111111",
+        	    "exp_month" => 2,
+        	    "exp_year" => 2016,
+        	    "cvc" => "314"
+        	        )
+        	    ));        	    
+        	    
         	    $stripe_res = Stripe_Charge::create(array(
         	        "amount" => ($this->input->post('hshsl_amount_dollar') * 100) + $this->input->post('hshsl_amount_cents'),
         	        "currency" => "usd",
-        	        "card" => $this->input->post('stripeToken'),
+        	        //@@
+//        	        "card" => $this->input->post('stripeToken'),
+        	        "card" => $tok->id,
         	        "description" => $this->input->post('hshsl_category'),
         	        "receipt_email" => $this->input->post('email')
         	    ));
         	    
-        	    $_SESSION['stripe_response'] = $stripe_res; 
+        	    $this->session->set_userdata('stripe_success', true); 
+        	    $this->session->set_userdata('stripe_response', $stripe_res->__toJSON());
+
         	    
-        	    error_log($this->input->post('email'));
+        	    echo '<pre>', print_r($stripe_res, 1), '</pre>';
+        	            	    
         	    $success = '<div class="alert alert-success">
 <strong>Success!</strong> Your payment of $' . $_POST['hshsl_amount_dollar'] . '.' . $_POST['hshsl_amount_cents'] . ' was successful. The confirmation e-mail will be sent to ' . $_POST['email'] . '.</div>' . $_POST['email'];
         	
-        	    // $headers = "From: $hshsl_email\n";
-        	    // mail($to,$subject,$message,$headers);
-        	} catch (Exception $e) {
-        	    $error = '<div class="alert alert-danger"><strong>Error!</strong> ' . $e->getMessage() . '  </div>';
-        	} // catch
-        	        	
+        	    $this->send_mail();
+        	    //@@
+        	    exit(0); 
+        	    
+        	} catch (Stripe_CardError $e) {
+        	    
+                // Since it's a decline, Stripe_CardError will be caught
+                $body = $e->getJsonBody();
+                $err = $body['error'];
+                
+                print('Status is:' . $e->getHttpStatus() . "\n");
+                print('Type is:' . $err['type'] . "\n");
+                print('Code is:' . $err['code'] . "\n");
+                // param is '' in this case
+                print('Param is:' . $err['param'] . "\n");
+                print('Message is:' . $err['message'] . "\n");
+            } catch (Stripe_InvalidRequestError $e) {
+                // Invalid parameters were supplied to Stripe's API
+            } catch (Stripe_AuthenticationError $e) {
+                // Authentication with Stripe's API failed
+                // (maybe you changed API keys recently)
+            } catch (Stripe_ApiConnectionError $e) {
+                // Network communication with Stripe failed
+            } catch (Stripe_Error $e) {
+                // Display a very generic error to the user, and maybe send
+                // yourself an email
+            } catch (Exception $e) {
+                // Something else happened, completely unrelated to Stripe
+            }
+            //@@
+            exit(1);
         	
-            
-            $this->send_mail();
-            redirect('welcome/receipt');
         } else {
             $this->index_handle_get();
         }
@@ -152,8 +189,32 @@ class Welcome extends CI_Controller
      */
     public function receipt()
     {
-    	$data['stripe_response'] = $_SESSION['stripe_response'];
+        $res = json_decode($this->session->userdata('stripe_response'));
+        $data['success'] = $this->session->userdata('stripe_success');
+        $data['stripe_response'] = $res;
         $this->template->content->view('welcome/receipt', $data); 
         $this->template->publish();
+    }
+    
+    
+    
+    public function test()
+    {
+        $this->output->set_header('Cache-Control: max-age=0, no-store, no-cache, must-revalidate, proxy-revalidate, post-check=0, pre-check=0');
+        $this->output->set_header('Expires: Tue, 03 Jul 2001 06:00:00 GMT');
+        $this->output->set_header('Last-Modified: ' . gmdate(DateTime::RFC2822) . ' GMT');
+        $this->load->library('form_validation');
+
+        if ($this->is_post()) {
+            $this->index_handle_post();
+            redirect('welcome/receipt');
+        } else {
+            $this->template->stripe_public_key = config_item('STRIPE_PUBLIC_KEY');
+            $this->template->content->view('welcome/test');
+            $this->template->foot->view('welcome/index_script');
+            $this->template->javascript->add('js/libpay-validation.js');
+            
+            $this->template->publish();
+        }
     }
 }

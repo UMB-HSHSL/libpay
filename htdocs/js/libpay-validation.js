@@ -7,14 +7,12 @@ $(document).ready(function() {
             validating: 'glyphicon glyphicon-refresh'
         },
         submitHandler: function(validator, form, submitButton) {
-			var chargeAmount = 3000;
-			// amount you want to charge, in cents. 1000 = $10.00, 2000 = $20.00 ...
 			// createToken returns immediately - the supplied callback submits the form if there are no errors
 			Stripe.createToken({
 				  number: $('.card-number').val(),
-				  cvc: $('.card-cvc').val(),
 				  exp_month: $('.card-expiry-month').val(),
 				  exp_year: $('.card-expiry-year').val(),
+				  cvc: $('.card-cvc').val(),
 				  name: $('.card-holder-name').val(),
 				  address_line1: $('.address').val(),
 				  address_city: $('.city').val(),
@@ -22,7 +20,6 @@ $(document).ready(function() {
 				  address_state: $('.state').val(),
 				  address_country: $('.country').val()
 				},
-				chargeAmount,
 				stripeResponseHandler
 			);
 			return false; // submit from callback

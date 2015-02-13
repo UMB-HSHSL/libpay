@@ -214,9 +214,9 @@
         <h3 class="panel-title">Important notice</h3>
       </div>
       <div class="panel-body">
-        <p>Your card will be charged for the amount you entered after submit.</p>
+        <p>Your card will be charged for the amount you entered after you click "Pay Now".</p>
         <p>Your account statement will show the following booking text:
-          XXXXXXX </p>
+          <?php echo $this->template->business_name ?> </p>
       </div>
     </div>
 
@@ -230,3 +230,4 @@
     </div>
   </fieldset>
 </form>
+</div></div>
