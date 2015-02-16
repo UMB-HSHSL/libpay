@@ -49,11 +49,9 @@ fi
 
 if [[ -z $1 ]]; then
     echo "usage: $0 <repo-name> <release-tag>"
-    echo "recent tags:"
-    cd $SRC/$REPO
-    git tag -n1 | tail -5
     exit 1;
 fi
+REPO=$1
 
 if [[ -z $2 ]]; then
     echo "usage: $0 <repo-name> <release-tag>"
@@ -63,7 +61,6 @@ if [[ -z $2 ]]; then
     exit 1;
 fi
 
-REPO=$1
 TAG=$2
 
 if [[ ! -d $SRC/$REPO ]]; then
