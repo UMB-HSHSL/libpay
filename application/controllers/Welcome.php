@@ -33,7 +33,7 @@ class Welcome extends MY_Controller
         
         $this->template->content->view('welcome/index');
         $this->template->foot->view('welcome/index_script');
-        $this->template->javascript->add('js/libpay-validation.js');
+        $this->template->javascript->add('assets/js/libpay-validation.js');
         $this->template->publish();
     }
 
@@ -212,7 +212,7 @@ class Welcome extends MY_Controller
             $this->template->stripe_public_key = config_item('STRIPE_PUBLIC_KEY');
             $this->template->content->view('welcome/test');
             $this->template->foot->view('welcome/index_script');
-            $this->template->javascript->add('js/libpay-validation.js');
+            $this->template->javascript->add('assets/js/libpay-validation.js');
             
             $this->template->publish();
         }
