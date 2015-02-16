@@ -75,15 +75,15 @@ git fetch --tags
 
 if ! git tag | grep -q $TAG; then
     echo "The tag '$TAG' could not be found in the repository."
-    echo "usage: $0 release-tag\nrecent tags:"
+    echo "usage: $0 <repo-name> <release-tag>\nrecent tags:"
     git tag -n1 | tail -5
     exit 1;
 fi
 
 
-if [[ ! -d $SRC/$TAG ]]; then
+if [[ ! -d $SRC/$REPO-$TAG ]]; then
     echo "exporting release $TAG..."
-    mkdir $SRC/$TAG
+    mkdir $SRC/$REPO-$TAG
     git archive $TAG | tar -x -C $SRC/$REPO-$TAG
 else
     echo "release $TAG already in place; deploying existing copy"
