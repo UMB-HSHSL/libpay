@@ -95,8 +95,15 @@ tar czf $REPO-$TAG.tgz $REPO-$TAG
 cp $SRC/$REPO-$TAG.tgz $DST/
 cd $DST
 tar xzf $REPO-$TAG.tgz
-mv $REPO _$REPO
-cp -R $REPO-$TAG $REPO
+cp -R $REPO-$TAG $REPO.NEW
+if [[ -d $REPO ]]; then
+	mv $REPO $REPO.OLD
+fi
+mv $REPO.NEW $REPO
 
+if [[ -d $REPO.OLD ]]; then
+	rm -rf $REPO;
+fi
+	
 echo "DONE!"
 
