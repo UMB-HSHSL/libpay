@@ -71,7 +71,7 @@ fi
 
 echo "syncing the repository..."
 cd $SRC/$REPO
-git fetch --tags
+git fetch --tags -q
 
 if ! git tag | grep -q $TAG; then
     echo "The tag '$TAG' could not be found in the repository."
@@ -94,8 +94,8 @@ tar czf $SRC/$REPO-$TAG.tgz $SRC/$REPO-$TAG
 cp $SRC/$REPO-$TAG.tgz $DST/
 cd $DST
 tar xzf $REPO-$TAG.tgz
-rm libpay
-mkshortcut -n libpay $REPO-$TAG
+mv $REPO _$REPO
+cp -R $REPO-$TAG $REPO
 
 echo "DONE!"
 
