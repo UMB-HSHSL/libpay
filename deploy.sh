@@ -29,7 +29,7 @@ SRC=/home/zburke/projects/releases
 
 # document root; symlink in this directory will point to repository
 # exported into $SRC, above
-DST=/home/zburke/projects/test
+DST=/cygdrive/w/HSHSL/bin/test/zburke
 
 
 # --
@@ -89,13 +89,21 @@ else
     echo "release $TAG already in place; deploying existing copy"
 fi
 
+cd $SRC
 echo "installing release $TAG..."
-tar czf $SRC/$REPO-$TAG.tgz $SRC/$REPO-$TAG
+tar czf $REPO-$TAG.tgz $REPO-$TAG
 cp $SRC/$REPO-$TAG.tgz $DST/
 cd $DST
 tar xzf $REPO-$TAG.tgz
-mv $REPO _$REPO
-cp -R $REPO-$TAG $REPO
+cp -R $REPO-$TAG $REPO.NEW
+if [[ -d $REPO ]]; then
+	mv $REPO $REPO.OLD
+fi
+mv $REPO.NEW $REPO
 
+if [[ -d $REPO.OLD ]]; then
+	rm -rf $REPO;
+fi
+	
 echo "DONE!"
 
