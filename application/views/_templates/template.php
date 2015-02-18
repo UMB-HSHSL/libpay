@@ -5,7 +5,7 @@
 <title>HS/HSL: <?php echo $this->template->title?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <meta name="keywords" content="health, library, information, learning, human, research, education, university, clinical, journals, sciences, databases, resources, academic, professional, public, college, maryland, baltimore, medicine, medical, dentistry, dental, nursing, nurse, social, work, law, graduate, studies, school" />
 <meta name="description" content="The Health Sciences and Human Services Library is a dynamic institution providing access to digital and print information, and fostering the life-long learning skills essential for health and human services professionals to succeed in the information intense environment of the 21st century." />
@@ -482,22 +482,10 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
-
-
-
-
-
-
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="<?php echo base_url() ?>assets/js/bootstrap-min.js"></script>
 <script src="<?php echo base_url() ?>assets/js/bootstrap-formhelpers-min.js"></script>
 <script src="<?php echo base_url() ?>assets/js/bootstrapValidator-min.js"></script>
-
-
 <?php echo $this->template->javascript ?>
 <?php echo $this->template->foot ?>
-
-
 </body>
 </html>
