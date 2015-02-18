@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-require_once APPPATH . '/libraries/Stripe.php';
+require_once APPPATH . 'libraries/Stripe.php';
 
 class Welcome extends MY_Controller
 {
@@ -95,39 +95,20 @@ class Welcome extends MY_Controller
         	$success = '';
         	
         	try {
-        	    $this->session->set_userdata('stripe_success', false);
+        	    $this->session->set_flashdata('stripe_success', false);
 
-        	    $tok = Stripe_Token::create(array(
-        	    "card" => array(
-        	    "number" => "4111111111111111",
-        	    "exp_month" => 2,
-        	    "exp_year" => 2016,
-        	    "cvc" => "314"
-        	        )
-        	    ));        	    
-        	    
         	    $stripe_res = Stripe_Charge::create(array(
         	        "amount" => ($this->input->post('hshsl_amount_dollar') * 100) + $this->input->post('hshsl_amount_cents'),
         	        "currency" => "usd",
-        	        //@@
-//        	        "card" => $this->input->post('stripeToken'),
-        	        "card" => $tok->id,
+           	        "card" => $this->input->post('stripeToken'),
         	        "description" => $this->input->post('hshsl_category'),
         	        "receipt_email" => $this->input->post('email')
         	    ));
         	    
-        	    $this->session->set_userdata('stripe_success', true); 
-        	    $this->session->set_userdata('stripe_response', $stripe_res->__toJSON());
+        	    $this->session->set_flashdata('stripe_success', true); 
+        	    $this->session->set_flashdata('stripe_response', $stripe_res->__toJSON());
 
-        	    
-        	    echo '<pre>', print_r($stripe_res, 1), '</pre>';
-        	            	    
-        	    $success = '<div class="alert alert-success">
-<strong>Success!</strong> Your payment of $' . $_POST['hshsl_amount_dollar'] . '.' . $_POST['hshsl_amount_cents'] . ' was successful. The confirmation e-mail will be sent to ' . $_POST['email'] . '.</div>' . $_POST['email'];
-        	
         	    $this->send_mail();
-        	    //@@
-        	    exit(0); 
         	    
         	} catch (Stripe_CardError $e) {
         	    
@@ -154,8 +135,6 @@ class Welcome extends MY_Controller
             } catch (Exception $e) {
                 // Something else happened, completely unrelated to Stripe
             }
-            //@@
-            exit(1);
         	
         } else {
             $this->index_handle_get();
@@ -189,9 +168,16 @@ class Welcome extends MY_Controller
      */
     public function receipt()
     {
+        $this->load->helper('stripe');
+        Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
+        $account = Stripe_Account::retrieve();
+                
         $res = json_decode($this->session->userdata('stripe_response'));
+        
         $data['success'] = $this->session->userdata('stripe_success');
-        $data['stripe_response'] = $res;
+        $data['receipt'] = $res;
+        $data['account'] = $account;
+        
         $this->template->content->view('welcome/receipt', $data); 
         $this->template->publish();
     }
@@ -200,21 +186,16 @@ class Welcome extends MY_Controller
     
     public function test()
     {
-        $this->output->set_header('Cache-Control: max-age=0, no-store, no-cache, must-revalidate, proxy-revalidate, post-check=0, pre-check=0');
-        $this->output->set_header('Expires: Tue, 03 Jul 2001 06:00:00 GMT');
-        $this->output->set_header('Last-Modified: ' . gmdate(DateTime::RFC2822) . ' GMT');
-        $this->load->library('form_validation');
-
-        if ($this->is_post()) {
-            $this->index_handle_post();
-            redirect('welcome/receipt');
-        } else {
-            $this->template->stripe_public_key = config_item('STRIPE_PUBLIC_KEY');
-            $this->template->content->view('welcome/test');
-            $this->template->foot->view('welcome/index_script');
-            $this->template->javascript->add('assets/js/libpay-validation.js');
-            
-            $this->template->publish();
-        }
+        $this->load->helper('stripe');
+        Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
+        $account = Stripe_Account::retrieve();
+         
+        $res = json_decode('{ "object": "charge", "created": 1424121383, "livemode": false, "paid": true, "amount": 1234, "currency": "usd", "refunded": false, "captured": true, "card": { "object": "card", "last4": "1111", "brand": "Visa", "funding": "unknown", "exp_month": 2, "exp_year": 2016, "fingerprint": "og9xepLg7fcWwEW4", "country": "US", "name": null, "address_line1": null, "address_line2": null, "address_city": null, "address_state": null, "address_zip": null, "address_country": null, "cvc_check": "pass", "address_line1_check": null, "address_zip_check": null, "dynamic_last4": null, "customer": null }, "balance_transaction": "txn_15WwE748Q9PN7AwpyaB2KWpr", "failure_message": null, "failure_code": null, "amount_refunded": 0, "customer": null, "invoice": null, "description": "Library Fines", "dispute": null, "metadata": [], "statement_descriptor": null, "fraud_details": [], "receipt_email": "zburke@hshsl.umaryland.edu", "receipt_number": null, "shipping": null, "refunds": { "object": "list", "total_count": 0, "has_more": false, "url": "\/v1\/charges\/ch_15WwE748Q9PN7AwpKur58pDj\/refunds", "data": [] }, "statement_description": null }');
+        $data['success'] = TRUE;
+        $data['receipt'] = $res;
+        $data['account'] = $account;
+        $this->template->content->view('welcome/receipt', $data);
+        $this->template->publish();
+        
     }
 }
