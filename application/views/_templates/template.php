@@ -489,6 +489,10 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 <script src="<?php echo base_url() ?>assets/js/bootstrapValidator-min.js"></script>
 <?php echo $this->template->javascript ?>
 <?php echo $this->template->foot ?>
-
+<?php
+if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
+    echo '<script src="https://localhost:35729/livereload.js?snipver=1"></script>';
+}
+?>
 </body>
 </html>

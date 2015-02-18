@@ -5,3 +5,4 @@ dist
 .buildpath
 .project
 .settings
+node_modules
