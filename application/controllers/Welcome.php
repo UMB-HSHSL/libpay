@@ -172,10 +172,8 @@ class Welcome extends MY_Controller
         Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
         $account = Stripe_Account::retrieve();
                 
-        $res = json_decode($this->session->userdata('stripe_response'));
-        
-        $data['success'] = $this->session->userdata('stripe_success');
-        $data['receipt'] = $res;
+        $data['success'] = $this->session->flashdata('stripe_success');
+        $data['receipt'] = json_decode($this->session->flashdata('stripe_response'));
         $data['account'] = $account;
         
         $this->template->content->view('welcome/receipt', $data); 
