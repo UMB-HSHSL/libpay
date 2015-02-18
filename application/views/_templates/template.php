@@ -103,7 +103,8 @@
           <div id="rss-container">
             <div style="margin: -10px 0px 10px;"> <a href="http://www.umaryland.edu" target="_blank"><img src="//www.hshsl.umaryland.edu/bin/img/Campus_Website_Icon@2x.png" class="hires" width="61" height="18" alt="UM Home" title="UM Home" /></a> | <a href="http://elm.umaryland.edu/" target="_blank"><img src="//www.hshsl.umaryland.edu/bin/img/TheElm_Icon@2x.png" class="hires" width="59" height="18" alt="The Elm" title="The Elm" /></a> | <a href="http://www.umaryland.edu/shuttlebus/" target="_blank"><img src="//www.hshsl.umaryland.edu/bin/img/UMshuttle_Icon@2x.png" class="hires" width="80" height="18" alt="UM Shuttle" title="UM Shuttle" /></a> | <a href="http://m.umaryland.edu/info/" target="_blank"><img src="//www.hshsl.umaryland.edu/bin/img/MobileUMB_Icon@2x.png" class="hires" width="78" height="18" alt="Mobile UMB" title="Mobile UMB" /></a> </div>
             <h3>Search the Library Website</h3>
-            <form name="cse-search-box" id="cse-search-box-01" action="/search.cfm">
+
+            <form name="cse-search-box" id="cse-search-box-01" action="http://www.hshsl.umaryland.edu/search.cfm">
               <input type="hidden" value="000680159333302753794:kbzziifcala" name="cx">
               <input type="hidden" value="FORID:11" name="cof">
               <input type="hidden" value="UTF-8" name="ie">
@@ -124,7 +125,7 @@
     <div class="header-search-mobile">
       <div id="LibraryLogo"><a href="http://www.hshsl.umaryland.edu/"><img src="//www.hshsl.umaryland.edu/bin/img/logo-200@2x.png" class="hires" width="340" height="96" alt="" /></a></div>
     </div>
-    <!--END HEADER SEARCH MOBILE--> 
+    <!--END HEADER SEARCH MOBILE-->
 
   </div>
   <!--Header-->
@@ -140,7 +141,8 @@
       <div class="accordion-inner">
         <ul class="nav nav-tabs nav-stacked">
           <li>
-            <form name="cse-search-box" id="cse-search-box-02" action="/search.cfm">
+
+           <form name="cse-search-box" id="cse-search-box-02" action="http://www.hshsl.umaryland.edu/search.cfm">
               <input type="hidden" value="000680159333302753794:kbzziifcala" name="cx">
               <input type="hidden" value="FORID:11" name="cof">
               <input type="hidden" value="UTF-8" name="ie">
@@ -246,10 +248,10 @@
 <!--END ALERTS-->
 
 <h2 class="page-title"><?php echo $this->template->title ?></h2>
-     
+
       <!--START FULL COLUMN-->
       <div class="full-column page-text">
-      
+
       <?php echo $this->template->content ?>
 
       </div>
@@ -257,9 +259,9 @@
 
       <br style="clear:both" />
     </div>
-    <!--END SHADOWCLIP--> 
+    <!--END SHADOWCLIP-->
   </div>
-  <!--END SHADOW--> 
+  <!--END SHADOW-->
 </div>
 <!--END CONTENT-->
 
@@ -307,7 +309,7 @@
     <div id="copyright-content">
       <p>Copyright &copy; 2013
       <script language="JavaScript">
-        var d=new Date(); 
+        var d=new Date();
         yr=d.getFullYear();
         if (yr > 2013)
         document.write("- "+yr);
@@ -443,14 +445,14 @@ window.addEventListener("orientationchange", hideAddressBar );
 <script src="//www.hshsl.umaryland.edu/bin/js/backtotop/jquery.ui.totop.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		
+
 		var defaults = {
   			containerID: 'toTop', // fading element id
 			containerHoverID: 'toTopHover', // fading element hover id
 			scrollSpeed: 1200,
-			easingType: 'linear' 
+			easingType: 'linear'
 		};
-		
+
 		$().UItoTop({ easingType: 'easeOutQuart' });
 	});
 </script>
@@ -470,7 +472,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 </script>
 
 
-<!--GOOGLE ANALYTICS--> 
+<!--GOOGLE ANALYTICS-->
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-82868-1']);
@@ -487,5 +489,6 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 <script src="<?php echo base_url() ?>assets/js/bootstrapValidator-min.js"></script>
 <?php echo $this->template->javascript ?>
 <?php echo $this->template->foot ?>
+
 </body>
 </html>
