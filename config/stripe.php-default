@@ -1,6 +1,0 @@
-<?php
-
-$config['STRIPE_SECRET_KEY'] = 'stripe-secret-key';
-$config['STRIPE_PUBLIC_KEY'] = 'stripe-public-key';
-
-

@@ -16,3 +16,13 @@ function cc_img($str)
     
     return $str; 
 }
+
+/**
+ * Return boolean TRUE if $str is in the array of accepted credit card brands; FALSE otherwise. 
+ * @param string $str
+ * @return boolean
+ */
+function cc_valid_brand($str)
+{
+    return in_array($str, config_item('stripe_valid_brands'));
+}

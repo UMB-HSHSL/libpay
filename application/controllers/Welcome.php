@@ -5,6 +5,12 @@ require_once APPPATH . 'libraries/Stripe.php';
 
 class Welcome extends MY_Controller
 {
+    public function __construct() 
+    {
+        parent::__construct();
+        Stripe::setApiKey(config_item('stripe_secret_key'));
+        $this->load->helper('stripe');
+    }
 
     public function index()
     {
@@ -15,7 +21,6 @@ class Welcome extends MY_Controller
         $this->load->library('form_validation');
         if ($this->is_post()) {
             $this->index_handle_post();
-            redirect('welcome/receipt');
         } else {
         	$this->index_handle_get();
         }
@@ -26,14 +31,15 @@ class Welcome extends MY_Controller
      */
     private function index_handle_get()
     {
-        Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
         $account = Stripe_Account::retrieve();
         $this->template->business_name = $account->business_name; 
-        $this->template->stripe_public_key = config_item('STRIPE_PUBLIC_KEY');
+        $this->template->stripe_public_key = config_item('stripe_public_key');
         
         $this->template->content->view('welcome/index');
         $this->template->foot->view('welcome/index_script');
+        $this->template->javascript->add('assets/js/bootstrapValidatorLibpay.js');
         $this->template->javascript->add('assets/js/libpay-validation.js');
+        $this->template->javascript->add('assets/js/libpay.js');
         $this->template->publish();
     }
 
@@ -43,7 +49,7 @@ class Welcome extends MY_Controller
      * otherwise show the receipt. Stripe errors will be displayed on the
      * receipt page as well.
      */
-    public function index_handle_post()
+    private function index_handle_post()
     {
         $rules = array(
             array(
@@ -90,13 +96,19 @@ class Welcome extends MY_Controller
         
         $this->form_validation->set_rules($rules);
         if ($this->form_validation->run()) {
-            Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
+            error_log('validation success');
         	$error = '';
         	$success = '';
         	
         	try {
+        	    
         	    $this->session->set_flashdata('stripe_success', false);
-
+        	    //@@        	    throw new Stripe_CardError;
+        	    $token = Stripe_Token::retrieve($this->input->post('stripeToken'));
+        	    if (! cc_valid_brand($token->card->brand)){
+        	        $valid_brands = implode(", ", config_item('stripe_valid_brands'));
+        	        throw new Exception("Sorry; we do not accept {$token->card->brand}. Please choose from the following: {$valid_brands}."); 
+        	    }
         	    $stripe_res = Stripe_Charge::create(array(
         	        "amount" => ($this->input->post('hshsl_amount_dollar') * 100) + $this->input->post('hshsl_amount_cents'),
         	        "currency" => "usd",
@@ -104,15 +116,44 @@ class Welcome extends MY_Controller
         	        "description" => $this->input->post('hshsl_category'),
         	        "receipt_email" => $this->input->post('email')
         	    ));
-        	    
-        	    $this->session->set_flashdata('stripe_success', true); 
-        	    $this->session->set_flashdata('stripe_response', $stripe_res->__toJSON());
 
+        	    $this->session->set_flashdata('stripe_success', true); 
+        	    
+        	    // store the receipt ID only so we don't run over 4k in our cookie
+        	    // we can retrieve the data in receipt handler
+        	    $this->session->set_flashdata('stripe_id', $stripe_res->id);
+        	    $this->session->set_flashdata('hshsl_details', (object) $_POST);
+        	     
         	    $this->send_mail();
+        	}
+/*
+        	 catch (Stripe_CardError $e) {
         	    
-        	} catch (Stripe_CardError $e) {
-        	    
+        	    $this->session->set_flashdata('stripe_exception', $e);
                 // Since it's a decline, Stripe_CardError will be caught
+                
+            } catch (Stripe_InvalidRequestError $e) {
+        	    $this->session->set_flashdata('stripe_exception', $e);
+                // Invalid parameters were supplied to Stripe's API
+            } catch (Stripe_AuthenticationError $e) {
+                // Authentication with Stripe's API failed
+                // (maybe you changed API keys recently)
+        	    $this->session->set_flashdata('stripe_exception', $e);
+            } catch (Stripe_ApiConnectionError $e) {
+                // Network communication with Stripe failed
+        	    $this->session->set_flashdata('stripe_exception', $e);
+            } catch (Stripe_Error $e) {
+                // Display a very generic error to the user, and maybe send
+                // yourself an email
+        	    $this->session->set_flashdata('stripe_exception', $e);
+            } 
+            */
+            catch (Exception $e) {
+                $str = json_encode($e); 
+                error_log("ERROR: {$str}");
+                /*
+                print '<pre>' .  print_r($e, 1);
+                
                 $body = $e->getJsonBody();
                 $err = $body['error'];
                 
@@ -120,23 +161,19 @@ class Welcome extends MY_Controller
                 print('Type is:' . $err['type'] . "\n");
                 print('Code is:' . $err['code'] . "\n");
                 // param is '' in this case
-                print('Param is:' . $err['param'] . "\n");
                 print('Message is:' . $err['message'] . "\n");
-            } catch (Stripe_InvalidRequestError $e) {
-                // Invalid parameters were supplied to Stripe's API
-            } catch (Stripe_AuthenticationError $e) {
-                // Authentication with Stripe's API failed
-                // (maybe you changed API keys recently)
-            } catch (Stripe_ApiConnectionError $e) {
-                // Network communication with Stripe failed
-            } catch (Stripe_Error $e) {
-                // Display a very generic error to the user, and maybe send
-                // yourself an email
-            } catch (Exception $e) {
+                print '</pre>'; 
+                
+                exit;
+                */
                 // Something else happened, completely unrelated to Stripe
+        	    $this->session->set_flashdata('stripe_exception', json_encode($e));
             }
+            redirect('welcome/receipt');
+            
         	
         } else {
+            error_log('validation failure');
             $this->index_handle_get();
         }
     }
@@ -169,31 +206,93 @@ class Welcome extends MY_Controller
     public function receipt()
     {
         $this->load->helper('stripe');
-        Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
         $account = Stripe_Account::retrieve();
-                
-        $data['success'] = $this->session->flashdata('stripe_success');
-        $data['receipt'] = json_decode($this->session->flashdata('stripe_response'));
-        $data['account'] = $account;
+        
+        $data = array(
+            'success' => false, 
+            'details' => (object) array(),
+            'receipt' => (object) array(), 
+            'error' => 'There was an error. Please try again.',
+            'account' => (object) array(), 
+        ); 
+        
+        if ($receipt_id = $this->session->flashdata('stripe_id'))
+        {
+            $receipt = Stripe_Charge::retrieve($receipt_id);
+            
+            $data['success'] = $this->session->flashdata('stripe_success') || false;
+            $data['details'] = $this->session->flashdata('hshsl_details');
+            $data['receipt'] = $receipt;
+            $data['error'] = json_decode($this->session->flashdata('stripe_exception'));
+            $data['account'] = $account;
+        }
         
         $this->template->content->view('welcome/receipt', $data); 
         $this->template->publish();
     }
     
     
-    
+    // decline, cvc, expired, error
     public function test()
     {
+        $this->output->set_header('Cache-Control: max-age=0, no-store, no-cache, must-revalidate, proxy-revalidate, post-check=0, pre-check=0');
+        $this->output->set_header('Expires: Tue, 03 Jul 2001 06:00:00 GMT');
+        $this->output->set_header('Last-Modified: ' . gmdate(DateTime::RFC2822) . ' GMT');
+    
+        $this->load->library('form_validation');
+        if ($this->is_post()) {
+            $this->index_handle_post();
+        } else {
+            
+            $account = Stripe_Account::retrieve();
+            $this->template->business_name = $account->business_name;
+            $this->template->stripe_public_key = config_item('stripe_public_key');
+            
+            $this->template->content->view('welcome/test');
+            $this->template->foot->view('welcome/index_script');
+            $this->template->javascript->add('assets/js/bootstrapValidatorLibpay.js');
+            $this->template->javascript->add('assets/js/libpay-validation.js');
+            $this->template->javascript->add('assets/js/libpay.js');
+            $this->template->publish();
+        }
+    }
+    
+    
+    public function test_receipt()
+    {
         $this->load->helper('stripe');
-        Stripe::setApiKey(config_item('STRIPE_SECRET_KEY'));
         $account = Stripe_Account::retrieve();
-         
-        $res = json_decode('{ "object": "charge", "created": 1424121383, "livemode": false, "paid": true, "amount": 1234, "currency": "usd", "refunded": false, "captured": true, "card": { "object": "card", "last4": "1111", "brand": "Visa", "funding": "unknown", "exp_month": 2, "exp_year": 2016, "fingerprint": "og9xepLg7fcWwEW4", "country": "US", "name": null, "address_line1": null, "address_line2": null, "address_city": null, "address_state": null, "address_zip": null, "address_country": null, "cvc_check": "pass", "address_line1_check": null, "address_zip_check": null, "dynamic_last4": null, "customer": null }, "balance_transaction": "txn_15WwE748Q9PN7AwpyaB2KWpr", "failure_message": null, "failure_code": null, "amount_refunded": 0, "customer": null, "invoice": null, "description": "Library Fines", "dispute": null, "metadata": [], "statement_descriptor": null, "fraud_details": [], "receipt_email": "zburke@hshsl.umaryland.edu", "receipt_number": null, "shipping": null, "refunds": { "object": "list", "total_count": 0, "has_more": false, "url": "\/v1\/charges\/ch_15WwE748Q9PN7AwpKur58pDj\/refunds", "data": [] }, "statement_description": null }');
+        
+        // from Stripe
+        $res = Stripe_Charge::retrieve("ch_15ZRJf48Q9PN7AwpARcCNlsp");
+        
+        // from the $_POST array
+        $hshsl_details = (object)array
+        	(
+        	    'hshsl_category' => 'Library Fines',
+        	    'hshsl_category_other' => '',
+        	    'invoice_no' =>'',
+        	    'hshsl_amount_dollar' => '12',
+        	    'hshsl_amount_cents' => '34',
+        	    'patron_name' => 'Testy McTesterson',
+        	    'umid' => 'tmct',
+        	    'phone' => '1231231234',
+        	    'email' => 'test@example.com',
+        	    'instruction' => '',
+        	    'street' => '601 West Lombard St',
+        	    'city' => 'Baltimore',
+        	    'state' => 'MD',
+        	    'zip' => '21201',
+        	    'cardholdername' => 'Test McTesterson',
+        	    'select2' => '2016',
+        	    'stripeToken' => 'tok_15YIJt48Q9PN7Awpieo81xzl',
+        	);
         $data['success'] = TRUE;
         $data['receipt'] = $res;
+        $data['details'] = $hshsl_details;
         $data['account'] = $account;
         $this->template->content->view('welcome/receipt', $data);
         $this->template->publish();
-        
     }
+    
 }

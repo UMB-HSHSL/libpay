@@ -60,8 +60,10 @@
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script><!--JQuery UI from Google; Used for DatePicker on Forms-->
 <script type="text/javascript" src="//www.hshsl.umaryland.edu/bin/js/common.js"></script><!--Common HS/HSL Javascript Functions-->
 <script type="text/javascript" src="//www.hshsl.umaryland.edu/bin/js/breadcrums.js"></script><!--Breadcrumbs-->
-<script type="text/javascript" src="//use.typekit.net/lmr6avg.js"></script><!--Adobe Typekit; Used for Trajan-Pro and Open-Sans-->
-<script type="text/javascript">try{Typekit.load();}catch(e){}</script><!--Adobe Typekit; Used for Trajan-Pro and Open-Sans-->
+<!-- Adobe Typekit; Used for Trajan-Pro and Open-Sans
+<script type="text/javascript" src="//use.typekit.net/lmr6avg.js"></script> 
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+ -->
 
 <!--[if lt IE 8]>
 <div class="unsupported-browser">

@@ -6,26 +6,38 @@ $(document).ready(function() {
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
-        submitHandler: function(validator, form, submitButton) {
-			// createToken returns immediately - the supplied callback submits the form if there are no errors
-			Stripe.createToken({
-				  number: $('.card-number').val(),
-				  exp_month: $('.card-expiry-month').val(),
-				  exp_year: $('.card-expiry-year').val(),
-				  cvc: $('.card-cvc').val(),
-				  name: $('.card-holder-name').val(),
-				  address_line1: $('.address').val(),
-				  address_city: $('.city').val(),
-				  address_zip: $('.zip').val(),
-				  address_state: $('.state').val(),
-				  address_country: $('.country').val()
-				},
-				stripeResponseHandler
-			);
-			return false; // submit from callback
-        }, //submithandler
-        fields: {
+        
+		  submitHandler: function(validator, form, submitButton) {
+	          var chargeAmount = (100 * $('.hshsl-amount-dollar').val()) + $('.hshsl-amount-cents').val(); 
+	          Stripe.createToken({
+	              number: $('.card-number').val(),
+	              cvc: $('.card-cvc').val(),
+	              exp_month: $('.card-expiry-month').val(),
+	              exp_year: $('.card-expiry-year').val(),
+	  						name: $('.card-holder-name').val(),
+	  						address_line1: $('.address').val(),
+	  						address_city: $('.city').val(),
+	  						address_zip: $('.zip').val(),
+	  						address_state: $('.state').val(),
+	  						address_country: $('.country').val()
+	          }, chargeAmount, stripeResponseHandler);
+	              return false; // submit from callback
+	        }, //submithandler
 
+        fields: {
+        	hshsl_category_other: {
+        		validators: {
+        			callback: {
+        				message: 'For the Fee Category "Other", you must describe the charge.', 
+        				callback: function(value, validator) {
+        					if ('Other' == validator.getFieldElements('hshsl_category').val()) {
+        						return value ? true : false; 
+        					}
+        					return true; 
+        				}
+        			}
+        		}
+        	},
             hshsl_amount_dollar: {
                 validators: {
                     digits: {
@@ -33,6 +45,12 @@ $(document).ready(function() {
                     },
                     notEmpty: {
                         message: 'The amount (dollar) is required'
+                    },
+                    callback: {
+                    	message: 'Minimum charge: 50&cent;',
+                    	callback: function(value, validator) {
+                    		return (100 * value) + validator.getFieldElements('hshsl_amount_cents').val() >= 50;
+                    	}
                     }
                 }
             },
@@ -43,6 +61,12 @@ $(document).ready(function() {
                     },
                     notEmpty: {
                         message: 'The amount (cents) is required'
+                    },
+                    callback: {
+                    	message: 'Minimum charge: 50&cent;',
+                    	callback: function(value, validator) {
+                    		return (100 * validator.getFieldElements('hshsl_amount_dollar').val()) + value >= 50;
+                    	}
                     }
                 }
             },
@@ -152,6 +176,9 @@ $(document).ready(function() {
                     creditCard: {
                         message: 'The credit card number is invalid'
                     },
+                    acceptedCreditCard: {
+                        message: 'We only accept Visa and MasterCard'
+                    }
                 }
             },
             expMonth: {
@@ -222,16 +249,20 @@ $(document).ready(function() {
             },
             cvv: {
                 selector: '#cvv',
-        validators: {
-            notEmpty: {
-                message: 'The cvv is required and can\'t be empty'
-            },
-            cvv: {
-                message: 'The value is not a valid CVV',
-                creditCardField: 'cardnumber'
-            }
-        }//validators
-      }, //cvv
+                validators: {
+		            notEmpty: {
+		                message: 'The cvv is required and can\'t be empty'
+		            },
+		            cvv: {
+		                message: 'The value is not a valid CVV',
+		                creditCardField: 'cardnumber'
+		            },
+		            acceptedCvv: {
+		                message: 'The value is not a valid CVV',
+		                creditCardField: 'cardnumber'
+		            },
+                }//validators
+            }, //cvv
     } //fields
   }); //bootstrapValidator
 }); //doc ready

@@ -1,6 +1,6 @@
 <script type="text/javascript">
-// this identifies your website in the createToken call below
 Stripe.setPublishableKey('<?php echo $this->template->stripe_public_key ?>');
+
 function stripeResponseHandler(status, response) {
 	if (response.error) {
 		$("body").scrollTop(0); 
@@ -15,4 +15,5 @@ function stripeResponseHandler(status, response) {
         form$.get(0).submit();
     }
 }
+
 </script>

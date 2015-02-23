@@ -26,19 +26,27 @@
     <div class="form-group">
       <label class="col-sm-4 control-label" for="textinput">Fee Category</label>
       <div class="col-sm-6">
-          <select name="hshsl_category">
+          <select name="hshsl_category" id="hshsl_category" required>
             <option value="Library Fines" selected="selected">Library Fines</option>
-            <option value="Classroom Reservation">Classroom Reservation</option>
-            <option value="Invoice">Invoice/Membership</option>
-            <option value="Inter-Library Loan">Inter-Library Loan</option>
+            <option value="Classroom Reservation">Classroom Rental</option>
+            <option value="Membership">Membership</option>
+            <option value="3D Printing">3D Printing</option>
             <option value="Other">Other</option>
-          </select>
+            </select>
       </div>
     </div>
+      
+  <!-- "Other" fee category description -->
+  <div class="form-group" id="category_other" style="display: none">
+    <div class="col-sm-6 col-sm-offset-4">
+      <input type="text" name="hshsl_category_other" placeholder="Other" class="hshsl-category-other form-control">
+    </div>
+  </div>
+    
 
   <!-- Invoice number -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Invoice No.</label>
+    <label class="col-sm-4 control-label" for="textinput">Invoice or Barcode No.</label>
     <div class="col-sm-6">
       <input type="text" name="invoice_no" placeholder="If applicable" class="invoice form-control">
     </div>
@@ -49,9 +57,9 @@
     <label class="col-sm-4 control-label" for="textinput">Payment Amount</label>
     <div class="col-sm-6">
         <div class="form-inline">
-            $ <input type="text" size="3" name="hshsl_amount_dollar" placeholder="" class="amount form-control">
+            $ <input type="text" size="3" name="hshsl_amount_dollar" placeholder="" class="amount form-control hshsl-amount-dollar">
             <span>.</span>
-            <input type="text" size="1" maxlength="2" name="hshsl_amount_cents" placeholder="" class="amount form-control">
+            <input type="text" size="1" maxlength="2" name="hshsl_amount_cents" placeholder="" class="amount form-control hshsl-amount-cents">
         </div>
     </div>
   </div>
@@ -224,7 +232,7 @@
     <div class="control-group">
       <div class="controls">
         <center>
-          <button class="btn btn-success" type="submit">Pay Now</button>
+          <button class="btn btn-success submit-button" type="submit">Pay Now</button>
         </center>
       </div>
     </div>
