@@ -160,7 +160,13 @@ class Welcome extends MY_Controller
         if ($data['success'] && $data['receipt_id']) {
             $data['receipt'] = Stripe_Charge::retrieve($data['receipt_id']);
         }
-
+        // we weren't successful, but we don't have an error. prolly some
+        // hacker trying to glean data from the receipt page directly.
+        // sorry; nothing to see here. move along.
+        elseif (! $data['error']) {
+            $le = new LibpayException("Your transaction could not be completed.");
+            $data['error'] = new LibpayError($le);
+        }
 
         $this->template->title = 'Secure Payment Receipt';
         $this->template->content->view('welcome/receipt', $data);
