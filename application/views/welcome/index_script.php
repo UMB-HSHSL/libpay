@@ -16,6 +16,16 @@ function stripeResponseHandler(status, response) {
     }
 }
 
+// don't submit the form when the user hits enter
+$('#payment-form').on("keyup keypress", function(e) {
+    var code = e.keyCode || e.which;
+    if (13 == code) {
+        e.preventDefault();
+    }
+});
+
+// global config object
+// used by form validators
 var Hshsl = (function(){
 
 	this.acceptedCards = ['<?php echo implode("','", array_map('strtoupper', config_item('stripe_valid_brands')))?>'];
