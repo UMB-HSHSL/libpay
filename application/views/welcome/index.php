@@ -35,14 +35,14 @@
             </select>
       </div>
     </div>
-      
+
   <!-- "Other" fee category description -->
   <div class="form-group" id="category_other" style="display: none">
     <div class="col-sm-6 col-sm-offset-4">
       <input type="text" name="hshsl_category_other" placeholder="Other" class="hshsl-category-other form-control">
     </div>
   </div>
-    
+
 
   <!-- Invoice number -->
   <div class="form-group">
@@ -170,7 +170,8 @@
       <label class="col-sm-4 control-label" for="textinput">Card Number</label>
       <div class="col-sm-6">
         <input type="text" id="cardnumber" maxlength="19" placeholder="Card Number" class="card-number form-control">
-      </div>
+        <p class="help-block">The following cards are accepted: <?php echo implode(", ", array_map('ucfirst', config_item('stripe_valid_brands')))?>.</p>
+        </div>
     </div>
 
     <!-- Expiry-->
