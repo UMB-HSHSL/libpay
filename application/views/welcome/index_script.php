@@ -3,7 +3,7 @@ Stripe.setPublishableKey('<?php echo $this->template->stripe_public_key ?>');
 
 function stripeResponseHandler(status, response) {
 	if (response.error) {
-		$("body").scrollTop(0); 
+		$("body").scrollTop(0);
         $('.submit-button').prop('disabled', false);
         document.getElementById('a_x200').style.display = 'block';
         $(".payment-errors").html(response.error.message);
@@ -16,4 +16,10 @@ function stripeResponseHandler(status, response) {
     }
 }
 
+var Hshsl = (function(){
+
+	this.acceptedCards = ['<?php echo implode("','", array_map('strtoupper', config_item('stripe_valid_brands')))?>'];
+
+    return this;
+})();
 </script>

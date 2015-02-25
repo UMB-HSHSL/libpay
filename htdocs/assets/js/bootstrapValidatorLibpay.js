@@ -87,7 +87,7 @@
                 }
             };
             
-            var acceptedCards = ['VISA', 'MASTERCARD'];
+            var acceptedCards = Hshsl.acceptedCards;
 
             var type, i;
             for (index in acceptedCards) {
@@ -198,7 +198,7 @@
                 }
             };
             
-            var acceptedCards = ['VISA', 'MASTERCARD'];
+            var acceptedCards = Hshsl.acceptedCards;
             
             var type, i, creditCardType = null;
             for (index in acceptedCards) {
