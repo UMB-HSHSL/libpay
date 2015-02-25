@@ -1,7 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// pull in Stripe credentials from the config file at the application root,
+// which is not part of the repo. see FCPATH/config/application.php-default
+// for details on what should be stored there.
 require_once FCPATH . 'config/application.php';
+
 
 /*
  * Stripe accepts the following: Visa, American Express, MasterCard,
@@ -10,7 +14,7 @@ require_once FCPATH . 'config/application.php';
  * HSHSL only accepts Visa and MasterCard. This value configures server-side
  * validation only. To enable other brands
  */
-$config['stripe_valid_brands'] = array('Visa', 'MasterCard');
+$config['stripe_valid_brands'] = array('visa', 'mastercard');
 
 
 // unknown error code: 400
