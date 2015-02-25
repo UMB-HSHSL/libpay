@@ -13,3 +13,16 @@ require_once FCPATH . 'config/application.php';
 $config['stripe_valid_brands'] = array('Visa', 'MasterCard');
 
 
+// unknown error code: 400
+$config['stripe_error_codes'] = array(
+    // request has invalid parameters, e.g. bad API key
+    'invalid_request_error' => (object) array('code' => 'e401' ),
+
+    // a temporary problem with Stripe's servers) and should turn up only very infrequently.
+    'api_error' => (object) array('code' => 'e402' ),
+
+    // Card errors are the most common type of error you should expect to handle. They result when the user enters a card that can't be charged for some reason.
+    'card_error' => (object) array('code' => 'e403' ),
+
+);
+

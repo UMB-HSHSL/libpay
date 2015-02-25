@@ -8,7 +8,7 @@
 
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('', 'id="payment-form" class="form-horizontal" autocomplete="off"')?>
+<?php echo form_open('welcome', 'id="payment-form" class="form-horizontal" autocomplete="off"')?>
   <div class="row row-centered">
   <div class="col-md-12 col-md-offset-0">
   <div class="page-header">
@@ -27,7 +27,7 @@
 
 <!-- PAYMENT FORM -->
   <fieldset>
-  
+
     <!-- Submit -->
     <div class="control-group">
       <div class="controls">
@@ -36,7 +36,7 @@
         </center>
       </div>
     </div>
-  
+
   <!-- Form Name -->
   <legend>Patron and Payment Details</legend>
 
@@ -60,7 +60,7 @@
       <input type="text" name="hshsl_category_other" placeholder="Other" class="hshsl-category-other form-control">
     </div>
   </div>
-  
+
   <!-- Invoice number -->
   <div class="form-group">
     <label class="col-sm-4 control-label" for="textinput">Invoice No.</label>
@@ -157,7 +157,7 @@
   <div class="form-group">
     <label class="col-sm-4 control-label" for="textinput">Postal Code</label>
     <div class="col-sm-6">
-      <input type="text" name="zip" maxlength="9" placeholder="Postal Code" class="zip form-control" value="21201"> 
+      <input type="text" name="zip" maxlength="9" placeholder="Postal Code" class="zip form-control" value="21201">
     </div>
   </div>
 
@@ -251,12 +251,12 @@
 
 
 <script>
-$('#test-accept' ).click(function(){ $('#cardnumber').val('4111111111111111'); }); 
-$('#test-decline').click(function(){ $('#cardnumber').val('4000000000000002'); }); 
-$('#test-cvc'    ).click(function(){ $('#cardnumber').val('4000000000000127'); }); 
-$('#test-expired').click(function(){ $('#cardnumber').val('4000000000000069'); }); 
-$('#test-error'  ).click(function(){ $('#cardnumber').val('4000000000000119'); }); 
-$('#test-amex'   ).click(function(){ $('#cardnumber').val('378282246310005'); $('#cvv').val('1234'); }); 
+$('#test-accept' ).click(function(){ $('#cardnumber').val('4111111111111111'); });
+$('#test-decline').click(function(){ $('#cardnumber').val('4000000000000002'); });
+$('#test-cvc'    ).click(function(){ $('#cardnumber').val('4000000000000127'); });
+$('#test-expired').click(function(){ $('#cardnumber').val('4000000000000069'); });
+$('#test-error'  ).click(function(){ $('#cardnumber').val('4000000000000119'); });
+$('#test-amex'   ).click(function(){ $('#cardnumber').val('378282246310005'); $('#cvv').val('1234'); });
 
 $('input[name="foo"]').click(function(){$('.submit-button').prop('disabled', false); });
 
