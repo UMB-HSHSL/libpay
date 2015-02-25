@@ -6,7 +6,7 @@
   </div>
 </div>
 <div class="row text-center">
-  <div class="col-sm-12 col-md-offset-0">
+  <div class="col-xs-12 col-md-offset-0">
     <div class="receipt-logo"><img src="<?php echo $account->business_logo ?>"></div>
   </div>
 </div>
@@ -16,30 +16,30 @@ if ($success) {
 ?>
 <div class="payment-success">
 <div class="row row-centered text-center">
-  <div class="col-sm-12 col-md-offset-0 text-center">
+  <div class="col-xs-12 col-md-offset-0 text-center">
     <h3>$<?php echo (int) ($receipt->amount / 100), '.', (int) ($receipt->amount % 100)  ?> at <?php echo $account->business_name ?></h3>
     <hr>
   </div>
 </div>
 <div class="row row-centered text-center">
-  <div class="col-sm-12 center-block">
+  <div class="col-xs-12 center-block">
     <?php echo cc_img($receipt->card->brand) ?> <?php echo $receipt->card->last4 ?>
   </div>
 </div>
 
 <div class="row row-centered text-center">
-  <div class="col-sm-12 center-block">
+  <div class="col-xs-12 center-block">
     <?php echo date('F j, Y g:i:s a', $receipt->created) ?>
   </div>
 </div>
 <div class="row row-centered text-center">
-  <div class="col-sm-12 center-block">
+  <div class="col-xs-12 center-block">
     Transaction ID <?php echo $receipt->id ?>
   </div>
 </div>
 
 <div class="row row-centered text-center">
-    <div class="col-md-6 col-md-offset-3 col-sm-12 text-left">
+    <div class="col-md-6 col-md-offset-3 col-xs-12 text-left">
     <table class="table table-striped">
     <tbody>
     <tr><td>Patron</td><td class="text-right"><?php echo $details->patron_name ?></td></tr>
@@ -63,13 +63,13 @@ if ($success) {
 
 
 <div class="row row-centered text-center">
-  <div class="col-sm-12 center-block">
+  <div class="col-xs-12 center-block">
     <?php echo date('F j, Y g:i:s a') ?>
   </div>
 </div>
 <?php if ($error->tx_id) {?>
 <div class="row row-centered text-center">
-  <div class="col-sm-12 center-block">
+  <div class="col-xs-12 center-block">
     Transaction ID <?php echo $error->tx_id ?>
   </div>
 </div>
@@ -79,7 +79,7 @@ if ($success) {
 
 ?>
 <div class="row row-centered text-center">
-  <div class="col-sm-12 center-block">
+  <div class="col-xs-12 center-block">
     <h3>Error: <?php echo $error->message ?></h3>
   </div>
 </div>
@@ -88,7 +88,7 @@ if ($success) {
 
 if ($details) { ?>
 <div class="row row-centered text-center">
-    <div class="col-md-6 col-md-offset-3 col-sm-12 text-left">
+    <div class="col-md-6 col-md-offset-3 col-xs-12 text-left">
     <table class="table table-striped">
     <tbody>
     <tr><td>Patron</td><td class="text-right"><?php echo $details->patron_name ?></td></tr>
