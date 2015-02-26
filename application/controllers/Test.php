@@ -278,4 +278,15 @@ class Test extends MY_Controller
         }
     }
 
+    public function log()
+    {
+        $this->load->model('charge_model');
+        $this->load->model('charge_field_model');
+        $this->db->initialize();
+
+        $cid = $this->charge_model->insert(array('stripe_id' => 'asdadf'));
+        echo "cid is {$cid}";
+
+    }
+
 }

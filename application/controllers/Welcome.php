@@ -115,6 +115,7 @@ class Welcome extends MY_Controller
         	        $this->input->post('email')
         	    );
 
+        	    $this->libpay->log_transaction_supplement($res, (object) $_POST);
         	    $this->session->set_flashdata('stripe_success', true);
 
         	    // store the receipt ID only so we don't run over 4k in our cookie.

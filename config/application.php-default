@@ -4,3 +4,5 @@ $config['stripe_secret_key'] = 'stripe-secret-key';
 $config['stripe_public_key'] = 'stripe-public-key';
 
 
+$config['papertrail_url'] = 'papertrailapp-domain';
+$config['papertrail_port'] = 'papertrailapp-port';

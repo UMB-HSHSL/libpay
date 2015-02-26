@@ -13,19 +13,54 @@ class Libpay
         $this->ci =& get_instance();
     }
 
-    public function log_transaction($tx)
-    {
-
-    }
-
-    public function log_error($str)
-    {
-        error_log("ERROR: " . $str);
-    }
-
     public function log_exception($type, $msg, $e = null)
     {
-        error_log("{$type} ERROR: {$msg}");
+        $this->ci->load->library('papertraillogger');
+        $this->ci->papertraillogger->write(
+            array(
+                array('type' => $type, 'body' => $msg)
+            )
+        );
+    }
+
+    public function log_transaction(Stripe_Charge $charge)
+    {
+        // so we can easily iterate over public members
+        $simple_charge = json_decode($charge->__toJSON());
+
+        $this->ci->load->model('charge_model');
+        $this->ci->load->model('charge_field_model');
+
+        $cid = $this->ci->charge_model->insert(array('stripe_id' => $simple_charge->id));
+        $fields = array();
+        foreach ($simple_charge as $k => $v) {
+            if (is_scalar($v)) {
+                $this->ci->charge_field_model->insert(array(
+                    'charge_id' => $cid,
+                    'charge_field' => $k,
+                    'charge_value' => $v,
+                ));
+            }
+        }
+    }
+
+    public function log_transaction_supplement($charge, $hshsl_value)
+    {
+        $this->ci->load->model('charge_model');
+        $this->ci->load->model('charge_field_model');
+
+        $stored_charge = $this->ci->charge_model->get_by('stripe_id', $charge->id);
+
+        $fields = array();
+        foreach ($hshsl_value as $k => $v) {
+            if (is_scalar($v)) {
+                $this->ci->charge_field_model->insert(array(
+                    'charge_id' => $stored_charge->id,
+                    'charge_field' => $k,
+                    'charge_value' => $v,
+                ));
+            }
+        }
     }
 
     public function pay($amount, $tokenId, $description, $receiptTo)
@@ -44,6 +79,8 @@ class Libpay
                 "receipt_email" => $receiptTo,
             ));
 
+            $this->log_transaction($stripe_res);
+
             $this->send_mail();
 
             return $stripe_res;
@@ -53,8 +90,6 @@ class Libpay
         catch (Stripe_CardError $e) {
             $body = $e->getJsonBody();
             $error = (object) $body['error'];
-
-            $this->log_exception("{$error->type}/{$error->code}", $error->message);
 
             $le = new LibpayException($error->message);
             $le->tx_id = $error->charge;
@@ -111,24 +146,24 @@ class Libpay
 
     private function send_mail()
     {
-        /*
-         * $to = $_POST["email"];
-         * $receipt_to = $_POST["email"]; // sender
-         * $subject = "HSHSL Payment Confirmation";
-         * $hshsl_email = "cats@hshsl.umaryland.edu";
-         * $to = "bkim@hshsl.umaryland.edu";
-         * $message ="Thank you for your payment. Please retain this email as the receipt of your payment.";
-         * $message.="\n\nYour Name: ".$_POST['patron_name'];
-         * $message.="\nYour UMID: ".$_POST['umid'];
-         * $message.="\nAmount: $";
-         * $message.=$_POST['hshsl_amount_dollar'].".".$_POST['hshsl_amount_cents'];
-         * $message.="\nCategory: ".$_POST['hshsl_category'];
-         * $message.="\nInvoice No. (If Applicable): ".$_POST['invoice_no'];
-         * $message.="\nSpecial Instructions. (If Applicable): ".$_POST['instruction'];
-         * // message lines should not exceed 70 characters (PHP rule), so wrap it
-         * $message = wordwrap($message, 70);
-         * mail($to,$subject,$message,"From: $hshsl_email\n");
-         */
+        return;
+
+        $to = $_POST["email"];
+        $receipt_to = $_POST["email"]; // sender
+        $subject = "HSHSL Payment Confirmation";
+        $hshsl_email = "cats@hshsl.umaryland.edu";
+        $to = "bkim@hshsl.umaryland.edu";
+        $message = "Thank you for your payment. Please retain this email as the receipt of your payment.";
+        $message .= "\n\nYour Name: " . $_POST['patron_name'];
+        $message .= "\nYour UMID: " . $_POST['umid'];
+        $message .= "\nAmount: $";
+        $message .= $_POST['hshsl_amount_dollar'] . "." . $_POST['hshsl_amount_cents'];
+        $message .= "\nCategory: " . $_POST['hshsl_category'];
+        $message .= "\nInvoice No. (If Applicable): " . $_POST['invoice_no'];
+        $message .= "\nSpecial Instructions. (If Applicable): " . $_POST['instruction'];
+        // message lines should not exceed 70 characters (PHP rule), so wrap it
+        $message = wordwrap($message, 70);
+        mail($to, $subject, $message, "From: $hshsl_email\n");
     }
 
     /**
