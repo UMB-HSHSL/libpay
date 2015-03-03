@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once APPPATH . 'libraries/Stripe.php';
+require_once APPPATH . 'models/Customer.php';
 
 class Welcome extends MY_Controller
 {
@@ -105,17 +106,17 @@ class Welcome extends MY_Controller
         if ($this->form_validation->run()) {
 
         	try {
-                $this->session->set_flashdata('hshsl_details', (object) $_POST);
+        	    $customer = new Customer($_POST);
+
+                $this->session->set_flashdata('hshsl_details', $customer->values());
                 $this->session->set_flashdata('stripe_success', false);
 
         	    $res = $this->libpay->pay(
         	        ($this->input->post('hshsl_amount_dollar') * 100) + $this->input->post('hshsl_amount_cents'),
         	        $this->input->post('stripeToken'),
-        	        $this->input->post('hshsl_category'),
-        	        $this->input->post('email')
+        	        $customer
         	    );
 
-        	    $this->libpay->log_transaction_supplement($res, (object) $_POST);
         	    $this->session->set_flashdata('stripe_success', true);
 
         	    // store the receipt ID only so we don't run over 4k in our cookie.
