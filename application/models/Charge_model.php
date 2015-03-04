@@ -7,18 +7,9 @@ class Charge_model extends MY_Model
         $this->_table = 'charge';
     }
 
-    public function _charges($limit, $offset)
-    {
-        $this->load->model('charge_field_model');
-
-        if ($limit && $offset) {
-            $this->limit($limit, $offset);
-        }
-
-        $ids = array_map(create_function('$i', 'return $i->id;'), $this->get_all());
-
-        return $this->pivot($ids);
-    }
+    /**
+     * Retrieve charges, either by a list of IDs or by limit and offset.
+     */
     public function charges()
     {
         $args = func_get_args();
@@ -30,17 +21,28 @@ class Charge_model extends MY_Model
         }
     }
 
-
+    /**
+     * Retrieve charges given a list of their IDs.
+     *
+     * @param array $ids
+     */
     private function charges_by_id($ids = array())
     {
 
     }
 
-    private function charges_by_limit($limit, $offset)
+    /**
+     * Retrieve charges given a limit and offset. Retrieve all charges
+     * if limit is not provided.
+     *
+     * @param int $limit
+     * @param int $offset
+     */
+    private function charges_by_limit($limit, $offset = 0)
     {
         $this->load->model('charge_field_model');
 
-        if ($limit && $offset) {
+        if ($limit) {
             $this->limit($limit, $offset);
         }
 
@@ -49,7 +51,11 @@ class Charge_model extends MY_Model
         return $this->pivot($ids);
     }
 
-
+    /**
+     * Retrieve a single charge given its ID.
+     * @param int $id
+     * @return mixed
+     */
     public function charge($id)
     {
         $this->load->model('charge_field_model');
@@ -60,7 +66,9 @@ class Charge_model extends MY_Model
 
 
     /**
-     * Pivot the charge_field
+     * Pivot the charge_field table to return objects with the following fields:
+     * patron_name, umid, hshsl_category, hshshl_category_ohter, hshsl_amount_dollar,
+     * hshsl_amount_cents, hshsl_cleared, stripe_id, stripe_created, stripe_status.
      *
      * @param array $ids
      */
@@ -73,10 +81,10 @@ class Charge_model extends MY_Model
             'hshsl_category_other',
             'hshsl_amount_dollar',
             'hshsl_amount_cents',
+            'hshsl_cleared',
             'stripe_id',
             'stripe_created',
-            'stripe_status',
-            'hshsl_cleared'
+            'stripe_status'
             );
 
         $pivot = array();
