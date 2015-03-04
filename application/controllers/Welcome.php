@@ -126,12 +126,12 @@ class Welcome extends MY_Controller
 
             catch (LibpayException $e) {
                 $this->session->set_flashdata('stripe_exception', new LibpayError($e));
-                $this->ci->session->set_flashdata('stripe_exception', $e);
+                $this->session->set_flashdata('stripe_exception', $e);
             }
             catch (Exception $e) {
                 $this->libpay->log_exception($e->getMessage(), $e);
                 $le = new LibpayException('There was an error and your transaction could not be processed');
-                $this->ci->session->set_flashdata('stripe_exception', new LibpayError($le));
+                $this->session->set_flashdata('stripe_exception', new LibpayError($le));
             }
 
             redirect('welcome/receipt');
