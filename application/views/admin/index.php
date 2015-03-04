@@ -16,7 +16,7 @@ foreach ($charges as $charge)
     $d = date('F j, Y g:i:s a', $charge->stripe_created);
     echo "<tr>
         <td>{$charge->patron_name} ($charge->umid)</td>
-        <td class='text-right'>\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}</td>
+        <td class='text-right'><span title='{$charge->stripe_id}'>\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}</span></td>
         <td>{$d}</td>
         <td>{$category}</td>
         <td>{$clear}</td>
@@ -28,7 +28,7 @@ foreach ($charges as $charge)
 </div>
 
 <div class="col-sm-12 text-right">
-    <?php echo form_submit('submit', 'Clear Checked Charges')?>
+    <?php echo form_submit('submit', 'Clear Checked Charges', 'class="btn btn-default"')?>
 </div>
 
 </div>
