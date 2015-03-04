@@ -99,6 +99,7 @@ class Charge_model extends MY_Model
             $this->db->where_in('charge.id', $ids);
         }
         $this->db->group_by('charge.id');
+        $this->order_by('id', 'desc');
 
         return $this->db->get('charge')->result();
     }
