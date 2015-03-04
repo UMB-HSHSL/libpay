@@ -44,7 +44,7 @@ class Charge_model extends MY_Model
             $this->limit($limit, $offset);
         }
 
-        $ids = array_map(function($i) { return $i->id; }, $this->get_all());
+        $ids = array_map(create_function('$i', 'return $i->id;'), $this->get_all());
 
         return $this->pivot($ids);
     }
