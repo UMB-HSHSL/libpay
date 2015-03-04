@@ -10,15 +10,15 @@
 <?php
 foreach ($charges as $charge)
 {
-    if ($charge->id % 2) $charge->hshsl_cleared = 1;
     $clear = ($charge->hshsl_cleared ? '&#x2713;' : "<input type='checkbox' name='id[]' value='{$charge->id}'>");
+    $category = strtolower($charge->hshsl_category) == 'other' ? "{$charge->hshsl_category} ({$charge->hshsl_category_other})" : $charge->hshsl_category;
 
     $d = date('F j, Y g:i:s a', $charge->stripe_created);
     echo "<tr>
         <td>{$charge->patron_name} ($charge->umid)</td>
         <td class='text-right'>\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}</td>
         <td>{$d}</td>
-        <td>{$charge->hshsl_category}</td>
+        <td>{$category}</td>
         <td>{$clear}</td>
     </tr>";
 }
