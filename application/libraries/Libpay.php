@@ -36,20 +36,12 @@ class Libpay
         $fields = array();
         foreach ($simple_charge as $k => $v) {
             if (is_scalar($v)) {
-                $this->ci->charge_field_model->insert(array(
-                    'charge_id' => $cid,
-                    'charge_field' => "stripe_{$k}",
-                    'charge_value' => $v,
-                ));
+                $this->ci->charge_field_model->insert($cid, "stripe_{$k}", $v);
             }
         }
 
         foreach ($customer->fields() as $k) {
-            $this->ci->charge_field_model->insert(array(
-                'charge_id' => $cid,
-                'charge_field' => $k,
-                'charge_value' => $customer->{$k}
-            ));
+            $this->ci->charge_field_model->insert($cid, $k, $customer->{$k});
         }
     }
 
