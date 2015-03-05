@@ -5,18 +5,20 @@
 
 <table class="table table-striped" id="tx_table">
 <thead>
-<tr><th>Name (UMID)</th><th>Amount</th><th>Date</th><th>Category</th><th>Cleared</th></tr>
+<tr><th>Name (UMID)</th><th>Phone</th><th>Amount</th><th>Date</th><th>Category</th><th>Cleared</th></tr>
 </thead><tbody>
 <?php
 foreach ($charges as $charge)
 {
     $clear = ($charge->hshsl_cleared ? '&#x2713;' : "<input type='checkbox' name='id[]' value='{$charge->id}'>");
     $category = strtolower($charge->hshsl_category) == 'other' ? "{$charge->hshsl_category} ({$charge->hshsl_category_other})" : $charge->hshsl_category;
+    $phone = substr($charge->phone, 0, 3) . '-' . substr($charge->phone, 3, 3) . '-' . substr($charge->phone, 6, 4);
 
     $d = date('F j, Y g:i:s a', $charge->stripe_created);
     echo "<tr>
-        <td>{$charge->patron_name} ($charge->umid)</td>
-        <td class='text-right'><span title='{$charge->stripe_id}'>\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}</span></td>
+        <td><a href='mailto:{$charge->email}'>{$charge->patron_name} ($charge->umid)</a></td>
+        <td>{$phone}</td>
+        <td class='text-right'><a href='https://dashboard.stripe.com/test/payments/{$charge->stripe_id}' target='new'>\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}</span></td>
         <td>{$d}</td>
         <td>{$category}</td>
         <td>{$clear}</td>
