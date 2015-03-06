@@ -26,16 +26,19 @@ class Login extends MY_Controller
 
     private function authenticate()
     {
+        $bind_username = $this->input->post('username');
+        $search_username = substr(strstr($this->input->post('username'), '\\'), 1);
+
         $cx = ldap_connect( config_item('ldap_host'), 389)
             or exit(">>Could not connect to LDAP server<<");
 
         ldap_set_option($cx, LDAP_OPT_PROTOCOL_VERSION, 3);
         ldap_set_option($cx, LDAP_OPT_REFERRALS, 0);
 
-        $bind = ldap_bind($cx, $this->input->post('username'), $this->input->post('password'))
+        $bind = ldap_bind($cx, $bind_username, $this->input->post('password'))
             or exit(">>Could not bind to " . config_item('ldap_host') . "<<");
 
-        $filter = str_replace('{USERNAME}', $this->input->post('username'), config_item('ldap_filter'));
+        $filter = str_replace('{USERNAME}', $search_username, config_item('ldap_filter'));
 
         $read = ldap_search($cx, config_item('ldap_base_dn'), $filter, config_item('ldap_fields'))
             or exit(">>Unable to search ldap server<<\nldap_error: " . ldap_error($cx));
@@ -44,7 +47,7 @@ class Login extends MY_Controller
 
         $user_info = array(
             'cn' => $info[0]['cn'][0],
-            'username' => $this->input->post('username'),
+            'username' => $search_username,
             'is_authenticated' => true
         );
         $this->session->set_userdata($user_info);

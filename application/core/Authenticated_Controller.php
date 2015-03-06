@@ -18,6 +18,6 @@ class Authenticated_Controller extends MY_Controller
 
     private function is_authenticated()
     {
-        return ($this->ci->session->userdata('is_authenticated')) ? true : false;
+        return ($this->session->userdata('is_authenticated')) ? true : false;
     }
 }
