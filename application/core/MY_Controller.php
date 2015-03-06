@@ -4,6 +4,7 @@ require_once APPPATH . 'libraries/LibpayException.php';
 require_once APPPATH . 'libraries/LibpayError.php';
 
 
+
 /**
  * Simple controller parent class requires all requests to come in via SSL.
  *
@@ -30,3 +31,5 @@ class MY_Controller extends CI_Controller
         return 'post' == strtolower($_SERVER['REQUEST_METHOD']);
     }
 }
+
+require_once 'Authenticated_Controller.php';

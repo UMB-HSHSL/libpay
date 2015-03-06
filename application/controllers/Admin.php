@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once APPPATH . 'libraries/Stripe.php';
 
-class Admin extends MY_Controller
+class Admin extends Authenticated_Controller
 {
     public function __construct()
     {

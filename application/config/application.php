@@ -30,3 +30,9 @@ $config['stripe_error_codes'] = array(
 
 );
 
+
+// LDAP/AD authentication config
+$config['ldap_host']    = 'hshsl-staff.umaryland.edu';
+$config['ldap_base_dn'] = 'OU=HSHSL Staff,DC=hshsl-staff,DC=umaryland,DC=edu';
+$config['ldap_filter']  = '(samaccountname={USERNAME})';
+$config['ldap_fields']  = array('cn');
