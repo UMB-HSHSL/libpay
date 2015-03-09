@@ -15,4 +15,10 @@ class Deny_authenticator
     {
         throw new Authentication_exception(__CLASS__ . ' rejects all authentication attempts.');
     }
+
+    public function username()
+    {
+        return null;
+    }
+
 }

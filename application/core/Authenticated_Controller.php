@@ -15,7 +15,15 @@ class Authenticated_Controller extends MY_Controller
         $this->load->library('authenticators/' . config_item('authenticator'), array(), 'authenticator');
         if (! $this->authenticator->is_authenticated()) {
             redirect("login");
+            return;
         }
+
+        // load requested authorizer and check if the user is already authenticated.
+        $this->load->library('authorizers/' . config_item('authorizer'), array(), 'authorizer');
+        if (! $this->authorizer->is_authorized($this->authenticator->username())) {
+            show_error('Sorry; you are not authorized to view this page.');
+        }
+
     }
 
 }

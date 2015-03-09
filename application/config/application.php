@@ -4,6 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // default authenticator; may be overridden by FCPATH/config/application.php
 $config['authenticator'] = 'Ldap_authenticator';
 
+// default authorizer; may be overridden by FCPATH/config/application.php
+$config['authorizer'] = 'Array_authorizer';
+
 // authorized users; overridden by in FCPATH/config/application.php
 $config['authorized_users'] = array();
 

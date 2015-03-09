@@ -55,4 +55,13 @@ class Ldap_authenticator
     {
         return ($this->ci->session->userdata('is_authenticated')) ? true : false;
     }
+
+    public function username()
+    {
+        if ($this->is_authenticated()) {
+            return $this->ci->session->userdata('username');
+        }
+
+        throw new Authentication_exception('User is not authenticated.');
+    }
 }
