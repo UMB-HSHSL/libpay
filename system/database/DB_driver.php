@@ -91,6 +91,23 @@ class CI_DB_driver {
 
 		log_message('debug', 'Database Driver Class Initialized');
 	}
+ 	/**
+ 	 * Log queries to stderr, if requested.
+ 	 */
+ 	function __destruct()
+ 	{
+ 		if ($this->debug)
+ 		{
+ 			foreach ($this->queries as $q)
+ 			{
+ 				$q = str_replace("\n", " ", $q);
+ 				$q = str_replace("\t", " ", $q);
+
+ 				error_log($q);
+ 			}
+ 		}
+ 	}
+
 
 	// --------------------------------------------------------------------
 

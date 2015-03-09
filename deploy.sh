@@ -5,11 +5,13 @@
 #
 # usage: $0 <tag-name> [deployment-dir]
 #
-# deployment-dir is hardcoded but may be overridden in at runtime.
+# deployment-dir is hardcoded but may be overridden at runtime.
 #
 # Assumes releases are tagged on the master branch. This script performs an
 # archive action to create a directory named for a given repository and tag
-# and creates a symlink to a tagged release in the $DST directory.
+# and, normally, would create a symlink but because Windows is dumb as a brick
+# and gets its knickers in a twist about symlinks we are stuck using copies
+# instead.
 #
 # New tags must be explicitly pushed to the origin as follows:
 #
@@ -30,7 +32,7 @@
 #     cd <deployment-directory>
 #     ln -s <repository-name>-<tag> <repository-name>
 #
-DST=/cygdrive/w/HSHSL/bin/test/zburke
+DST=/cygdrive/w/HSHSL/bin/test/pay
 
 
 # --
@@ -123,6 +125,10 @@ fi
 if [[ ! -f index.php ]]; then
   cp -R $REPO/htdocs/index.php ./
 fi
+
+# run migrations
+echo `php ./index.php migrate index`
+
 
 
 echo "DONE!"
