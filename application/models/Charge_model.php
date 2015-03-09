@@ -93,6 +93,8 @@ class Charge_model extends MY_Model
             'hshsl_amount_dollar',
             'hshsl_amount_cents',
             'hshsl_cleared',
+            'hshsl_cleared_by',
+            'hshsl_cleared_date',
             'invoice_no',
             'instruction',
             'stripe_id',

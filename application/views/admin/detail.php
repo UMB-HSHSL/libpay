@@ -21,7 +21,7 @@
     <dt>Amount</dt><dd>$<?php echo (int) ($receipt->amount / 100), '.', (int) ($receipt->amount % 100)  ?></dd>
     <dt>Date</dt><dd><?php echo date('F j, Y g:i:s a', $receipt->created) ?></dd>
     <dt>Status</dt><dd><?php echo $receipt->status ?></dd>
-    <dt>Cleared</dt><dd><?php echo ($charge->hshsl_cleared ? '&#x2713;' : "&nbsp;");?></dd>
+    <dt>Cleared</dt><dd><?php echo cleared($charge) ?></dd>
     <dt>Description</dt><dd><?php echo xss_clean($charge->hshsl_category); if ($charge->hshsl_category_other) echo xss_clean("({$charge->hshsl_category_other})"); ?></dd>
     <dt>Instructions</dt><dd><?php echo xss_clean($charge->instruction); ?>&nbsp;</dd>
     <dt>Invoice No.</dt><dd><?php echo xss_clean($charge->invoice_no); ?>&nbsp;</dd>

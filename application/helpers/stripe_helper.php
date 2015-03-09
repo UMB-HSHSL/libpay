@@ -26,3 +26,12 @@ function cc_valid_brand($str)
 {
     return in_array(strtolower($str), config_item('stripe_valid_brands'));
 }
+
+function cleared($charge)
+{
+    $str = '&nbsp;';
+    if ($charge->hshsl_cleared) {
+        $str = date("Y/m/d g:i:s a", $charge->hshsl_cleared_date) . " by " . $charge->hshsl_cleared_by;
+    }
+    return $str;
+}

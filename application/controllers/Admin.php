@@ -63,7 +63,7 @@ class Admin extends Authenticated_Controller
             if (! isset($charge->hshsl_cleared)) {
                 $count++;
                 $this->charge_field_model->insert($id, 'hshsl_cleared', 1);
-                $this->charge_field_model->insert($id, 'hshsl_cleared_by', '');
+                $this->charge_field_model->insert($id, 'hshsl_cleared_by', $this->authenticator->username());
                 $this->charge_field_model->insert($id, 'hshsl_cleared_date', time());
             }
         }
