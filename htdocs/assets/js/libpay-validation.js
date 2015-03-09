@@ -83,10 +83,14 @@ $(document).ready(function() {
                     notEmpty: {
                         message: 'The UMID is required and can\'t be empty'
                     },
+                    regexp: {
+                    	message: 'The UMID can only contain the following charactures: letters (uppercase or lowercase), numbers, underscore, dash, and period',
+                    	regexp: '^[a-zA-Z0-9_\.-]+$'
+                    },
                     stringLength: {
                         min: 3,
                         max: 30,
-                        message: 'The card holder name must be more than 3 and less than 20 characters long'
+                        message: 'The UMID must be more than 3 and less than 20 characters long'
                     }
                 }
             },
