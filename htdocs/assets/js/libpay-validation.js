@@ -41,10 +41,10 @@ $(document).ready(function() {
             hshsl_amount_dollar: {
                 validators: {
                     digits: {
-                        message: 'The amount (dollar) can contain digits only'
+                        message: 'The amount (dollars) can contain digits only'
                     },
                     notEmpty: {
-                        message: 'The amount (dollar) is required'
+                        message: 'The amount (dollars) is required'
                     },
                     callback: {
                     	message: 'Minimum charge: 50&cent;',
@@ -97,8 +97,8 @@ $(document).ready(function() {
 
             phone: {
                 validators: {
-                    digits: {
-                        message: 'The phone number can contain digits only'
+                    phone: {
+                        message: 'Please enter a 10-digit US phone number'
                     },
                     notEmpty: {
                         message: 'The phone number is required'
@@ -137,10 +137,9 @@ $(document).ready(function() {
                     notEmpty: {
                         message: 'The zip is required and cannot be empty'
                     },
-                    stringLength: {
-                        min: 3,
-                        max: 9,
-                        message: 'The zip must be more than 3 and less than 9 characters long'
+                    zipCode: {
+                    	country: 'US',
+                        message: 'Please use a 5- or 9-digit zip code'
                     }
                 }
             },
