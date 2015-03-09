@@ -47,7 +47,7 @@ REPO=`git config remote.origin.url| sed -e 's/.*\/\(.*\)\.git/\1/'`
 if [[ -z $1 ]]; then
     echo "usage: $0 <release-tag> [destination]"
     echo "recent tags:"
-    git tag -n1 | tail -5
+    git for-each-ref --sort=taggerdate --format '%(refname) %(*subject)' refs/tags | tail -5
     exit 1;
 fi
 
