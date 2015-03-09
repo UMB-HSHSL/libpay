@@ -1,3 +1,4 @@
+<?php echo flash_message()?>
 <?php echo form_open('admin/clear')?>
 
 <div class="row row-centered">

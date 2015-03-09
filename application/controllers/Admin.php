@@ -53,15 +53,18 @@ class Admin extends Authenticated_Controller
         $this->load->model('charge_model');
         $this->load->model('charge_field_model');
 
+        $count = 0;
         foreach ($ids as $id) {
             $charge = $this->charge_model->get($id);
             if (! isset($charge->hshsl_cleared)) {
+                $count++;
                 $this->charge_field_model->insert($id, 'hshsl_cleared', 1);
                 $this->charge_field_model->insert($id, 'hshsl_cleared_by', '');
                 $this->charge_field_model->insert($id, 'hshsl_cleared_date', time());
             }
         }
 
+        flash_message('info', "Cleared {$count} transactions.");
         redirect('admin');
     }
 
