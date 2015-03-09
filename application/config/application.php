@@ -1,8 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-// default authenticator may be overridden by values in FCPATH/config/application.php
+// default authenticator; may be overridden by FCPATH/config/application.php
 $config['authenticator'] = 'Ldap_authenticator';
+
+// authorized users; overridden by in FCPATH/config/application.php
+$config['authorized_users'] = array();
 
 
 // pull in Stripe credentials from the config file at the application root,
