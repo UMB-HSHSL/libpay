@@ -5,15 +5,16 @@ require_once APPPATH . 'libraries/Stripe.php';
 
 class Login extends MY_Controller
 {
+
     public function __construct()
     {
         parent::__construct();
         $this->load->helper('form');
     }
 
-
     public function index()
     {
+        $this->load->library('form_validation');
         if ($this->is_post()) {
             $this->authenticate();
             return;
@@ -24,37 +25,17 @@ class Login extends MY_Controller
         $this->template->publish();
     }
 
+
     private function authenticate()
     {
-        $bind_username = $this->input->post('username');
-        $search_username = substr(strstr($this->input->post('username'), '\\'), 1);
+        $this->load->library('authenticators/' . config_item('authenticator'), array(), 'authenticator');
 
-        $cx = ldap_connect( config_item('ldap_host'), 389)
-            or exit(">>Could not connect to LDAP server<<");
-
-        ldap_set_option($cx, LDAP_OPT_PROTOCOL_VERSION, 3);
-        ldap_set_option($cx, LDAP_OPT_REFERRALS, 0);
-
-        $bind = ldap_bind($cx, $bind_username, $this->input->post('password'))
-            or exit(">>Could not bind to " . config_item('ldap_host') . "<<");
-
-        $filter = str_replace('{USERNAME}', $search_username, config_item('ldap_filter'));
-
-        $read = ldap_search($cx, config_item('ldap_base_dn'), $filter, config_item('ldap_fields'))
-            or exit(">>Unable to search ldap server<<\nldap_error: " . ldap_error($cx));
-
-        $info = ldap_get_entries($connect, $read);
-
-        $user_info = array(
-            'cn' => $info[0]['cn'][0],
-            'username' => $search_username,
-            'is_authenticated' => true
-        );
-        $this->session->set_userdata($user_info);
-
-        ldap_close($connect);
-
-        redirect('admin');
+        try {
+            $this->authenticator->authenticate($this->input->post('username'), $this->input->post('password'));
+            redirect("admin");
+        } catch (Authentication_exception $e) {
+            flash_message('error', "Authentication error: " . $e->getMessage());
+            redirect('login');
+        }
     }
-
 }

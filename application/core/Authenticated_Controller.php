@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Simple controller parent class requires all requests to come in via SSL.
+ * Redirect all unauthenticated users to login.
  *
  */
 class Authenticated_Controller extends MY_Controller
@@ -11,13 +11,17 @@ class Authenticated_Controller extends MY_Controller
     {
         parent::__construct();
 
-        if (! $this->is_authenticated()) {
+        // load requested authenticator and check if the user is already authenticated.
+        $this->load->library('authenticators/' . config_item('authenticator'), array(), 'authenticator');
+        if (! $this->authenticator->is_authenticated()) {
             redirect("login");
         }
     }
 
-    private function is_authenticated()
-    {
-        return ($this->session->userdata('is_authenticated')) ? true : false;
-    }
+}
+
+// dummy exception wrapper
+class Authentication_exception extends Exception
+{
+
 }

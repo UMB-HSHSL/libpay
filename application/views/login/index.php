@@ -1,3 +1,5 @@
+<?php echo flash_message(); ?>
+
 <?php echo validation_errors(); ?>
 
 <?php echo form_open('', 'id="payment-form" class="form-horizontal" autocomplete="off"')?>

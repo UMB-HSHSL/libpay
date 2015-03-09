@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// default authenticator may be overridden by values in FCPATH/config/application.php
+$config['authenticator'] = 'Ldap_authenticator';
+
+
 // pull in Stripe credentials from the config file at the application root,
 // which is not part of the repo. see FCPATH/config/application.php-default
 // for details on what should be stored there.
