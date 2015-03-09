@@ -52,14 +52,23 @@ class Charge_model extends MY_Model
     }
 
     /**
-     * Retrieve a single charge given its ID.
+     * Retrieve a single charge given its PK or its Stripe ID
      * @param int $id
      * @return mixed
      */
     public function charge($id)
     {
-        $this->load->model('charge_field_model');
-        return array_shift($this->pivot(array($id)));
+        $charge = null;
+        if (is_int($id)) {
+            $this->load->model('charge_field_model');
+            $charge = array_shift($this->pivot(array($id)));
+        }
+        else {
+            $item = $this->get_by('stripe_id', $id);
+            $charge = array_shift($this->pivot(array($item->id)));
+        }
+
+        return $charge;
     }
 
 

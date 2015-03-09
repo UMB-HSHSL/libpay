@@ -108,7 +108,6 @@ class Welcome extends MY_Controller
         	try {
         	    $customer = new Customer($_POST);
 
-                $this->session->set_flashdata('hshsl_details', $customer->values());
                 $this->session->set_flashdata('stripe_success', false);
 
         	    $res = $this->libpay->pay(
@@ -149,24 +148,26 @@ class Welcome extends MY_Controller
     public function receipt()
     {
         $this->load->helper('stripe');
+        $this->load->model('charge_model');
 
         $data = array(
             'success' => $this->session->flashdata('stripe_success'),
             'error'   => $this->session->flashdata('stripe_exception'),
             'account' => Stripe_Account::retrieve(),
-            'details' => $this->session->flashdata('hshsl_details'),
+            'details' => null,
             'receipt_id' => $this->session->flashdata('stripe_id'),
             'receipt'    => null,
         );
 
         if ($data['success'] && $data['receipt_id']) {
             $data['receipt'] = Stripe_Charge::retrieve($data['receipt_id']);
+            $data['details'] = $this->charge_model->charge($data['receipt_id']);
         }
         // we weren't successful, but we don't have an error. prolly some
         // hacker trying to glean data from the receipt page directly.
         // sorry; nothing to see here. move along.
         elseif (! $data['error']) {
-            $le = new LibpayException("Your transaction could not be completed.");
+            $le = new LibpayException("Your transaction was successful but the details are not currently available. Please check your email for a receipt.");
             $data['error'] = new LibpayError($le);
         }
 
