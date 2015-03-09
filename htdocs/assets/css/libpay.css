@@ -1,0 +1,9 @@
+
+
+dl.libpay_details dt, dl.libpay_details dd { float: left; padding: 0; margin: 0; }
+dl.libpay_details dt {
+    width: 15%;
+}
+dl.libpay_details dd {
+    width: 85%;
+}

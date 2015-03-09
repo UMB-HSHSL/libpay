@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrapValidator-min.css"/>
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
 <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrap-side-notes.css" />
+<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/libpay.css" />
 
 
 <link type="image/vnd.microsoft.icon" rel="shortcut icon" href="//www.hshsl.umaryland.edu/favicon.ico">
@@ -61,7 +62,7 @@
 <script type="text/javascript" src="//www.hshsl.umaryland.edu/bin/js/common.js"></script><!--Common HS/HSL Javascript Functions-->
 <script type="text/javascript" src="//www.hshsl.umaryland.edu/bin/js/breadcrums.js"></script><!--Breadcrumbs-->
 <!-- Adobe Typekit; Used for Trajan-Pro and Open-Sans
-<script type="text/javascript" src="//use.typekit.net/lmr6avg.js"></script> 
+<script type="text/javascript" src="//use.typekit.net/lmr6avg.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
  -->
 

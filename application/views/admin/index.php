@@ -12,16 +12,15 @@
 foreach ($charges as $charge)
 {
     $clear = ($charge->hshsl_cleared ? '&#x2713;' : "<input type='checkbox' name='id[]' value='{$charge->id}'>");
-    $category = strtolower($charge->hshsl_category) == 'other' ? "{$charge->hshsl_category} ({$charge->hshsl_category_other})" : $charge->hshsl_category;
     $phone = substr($charge->phone, 0, 3) . '-' . substr($charge->phone, 3, 3) . '-' . substr($charge->phone, 6, 4);
 
     $d = date('F j, Y g:i:s a', $charge->stripe_created);
     echo "<tr>
-        <td><a href='mailto:{$charge->email}'>{$charge->patron_name} ($charge->umid)</a></td>
+        <td>", xss_clean($charge->patron_name), " ($charge->umid)</a></td>
         <td>{$phone}</td>
-        <td class='text-right'><a href='https://dashboard.stripe.com/test/payments/{$charge->stripe_id}' target='new'>\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}</span></td>
+        <td class='text-right'>", anchor("admin/details/{$charge->id}", "\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}"), "</span></td>
         <td>{$d}</td>
-        <td>{$category}</td>
+        <td>{$charge->hshsl_category}</td>
         <td>{$clear}</td>
     </tr>";
 }

@@ -10,6 +10,9 @@ class Admin extends Authenticated_Controller
         parent::__construct();
         Stripe::setApiKey(config_item('stripe_secret_key'));
         $this->load->helper('stripe');
+        $this->load->helper('url');
+        $this->load->helper('security');
+
         $this->load->library('libpay');
     }
 
@@ -36,7 +39,8 @@ class Admin extends Authenticated_Controller
         $this->load->model('charge_model');
         $this->load->model('charge_field_model');
 
-        $data['charge'] = $this->charge_model->charge(id);
+        $data['charge'] = $this->charge_model->charge($id);
+        $data['receipt'] = Stripe_Charge::retrieve($data['charge']->stripe_id);
 
         $this->template->title = 'Lib Pay Charge Details';
         $this->template->content->view('admin/detail', $data);

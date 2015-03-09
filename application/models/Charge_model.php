@@ -59,7 +59,7 @@ class Charge_model extends MY_Model
     public function charge($id)
     {
         $charge = null;
-        if (is_int($id)) {
+        if (preg_match('/^\\d+$/', $id)) {
             $this->load->model('charge_field_model');
             $charge = array_shift($this->pivot(array($id)));
         }
@@ -93,6 +93,8 @@ class Charge_model extends MY_Model
             'hshsl_amount_dollar',
             'hshsl_amount_cents',
             'hshsl_cleared',
+            'invoice_no',
+            'instruction',
             'stripe_id',
             'stripe_created',
             'stripe_status'
