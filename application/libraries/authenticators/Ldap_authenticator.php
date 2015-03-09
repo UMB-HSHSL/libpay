@@ -46,7 +46,7 @@ class Ldap_authenticator
             'username' => $search_username,
             'is_authenticated' => true
         );
-        $this->session->set_userdata($user_info);
+        $this->ci->session->set_userdata($user_info);
 
         ldap_close($connect);
     }
