@@ -2,10 +2,7 @@
 
 <?php echo form_open('', 'id="payment-form" class="form-horizontal" autocomplete="off"')?>
   <div class="row row-centered">
-  <div class="col-md-12 col-md-offset-0">
-  <div class="page-header">
-    <h2 class="gdfg">Secure Payment Form for UMB HS/HSL</h2>
-  </div>
+  <div class="col-md-12">
   <noscript>
   <div class="bs-callout bs-callout-danger">
     <h4>JavaScript is not enabled!</h4>
