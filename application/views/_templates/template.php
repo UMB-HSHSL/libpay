@@ -251,7 +251,7 @@
 <!--END ALERTS-->
 <?php
 
-if (! empty($this->template->username->__toString()))
+if ($this->template->username->exists())
 {
     ?>
 <div class="row">

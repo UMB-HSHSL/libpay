@@ -376,6 +376,10 @@ class Partial {
         return (string) $this->content();
     }
 
+    public function exists() {
+        return ! empty((string) $this->content());
+    }
+
     /**
      * Returns the content
      * @return string
