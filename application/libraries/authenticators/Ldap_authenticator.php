@@ -19,7 +19,7 @@ class Ldap_authenticator
         $search_username = substr(strstr($username, '\\'), 1);
 
         if (! ($cx = ldap_connect(config_item('ldap_host'), 389))) {
-            throw new Authentication_exception('Could not connect to LDAP server');
+            throw new Authentication_exception('Connection error; please try again later.');
             //@@ or exit(">>Unable to search ldap server<<\nldap_error: " . ldap_error($cx));
         }
 
@@ -27,19 +27,17 @@ class Ldap_authenticator
         ldap_set_option($cx, LDAP_OPT_REFERRALS, 0);
 
         if (! ($bind = ldap_bind($cx, $bind_username, $password))) {
-            throw new Authentication_exception("Could not bind to LDAP server");
-            //@@ or exit(">>Unable to search ldap server<<\nldap_error: " . ldap_error($cx));
+            throw new Authentication_exception("Your username or password was invalid. Please try again.");
         }
-
 
         $filter = str_replace('{USERNAME}', $search_username, config_item('ldap_filter'));
 
         if (! ($read = ldap_search($cx, config_item('ldap_base_dn'), $filter, config_item('ldap_fields')))) {
-            throw new Authentication_exception("Unable to search ldap server");
+            throw new Authentication_exception("Connection error; please try again.");
             //@@ or exit(">>Unable to search ldap server<<\nldap_error: " . ldap_error($cx));
         }
 
-        $info = ldap_get_entries($connect, $read);
+        $info = ldap_get_entries($cx, $read);
 
         $user_info = array(
             'cn' => $info[0]['cn'][0],
@@ -48,7 +46,7 @@ class Ldap_authenticator
         );
         $this->ci->session->set_userdata($user_info);
 
-        ldap_close($connect);
+        ldap_close($cx);
     }
 
     public function is_authenticated()
