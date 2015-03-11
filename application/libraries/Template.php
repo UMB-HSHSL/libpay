@@ -377,7 +377,8 @@ class Partial {
     }
 
     public function exists() {
-        return ! empty((string) $this->content());
+        $str = (string) $this->content();
+        return ! empty($str);
     }
 
     /**
