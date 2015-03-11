@@ -24,6 +24,7 @@ class Authenticated_Controller extends MY_Controller
             show_error('Sorry; you are not authorized to view this page.');
         }
 
+        $this->template->username = $this->authenticator->name();
     }
 
 }

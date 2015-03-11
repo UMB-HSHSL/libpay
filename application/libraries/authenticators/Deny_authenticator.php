@@ -21,4 +21,9 @@ class Deny_authenticator
         return null;
     }
 
+    public function name()
+    {
+        return null;
+    }
+
 }

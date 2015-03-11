@@ -64,4 +64,14 @@ class Ldap_authenticator
 
         throw new Authentication_exception('User is not authenticated.');
     }
+
+    public function name()
+    {
+        if ($this->is_authenticated()) {
+            return $this->ci->session->userdata('cn');
+        }
+
+        throw new Authentication_exception('User is not authenticated.');
+    }
+
 }

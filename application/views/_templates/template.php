@@ -249,8 +249,23 @@
   <div id="alertmessage"></div>
 </div>
 <!--END ALERTS-->
+<?php
 
-<h2 class="page-title"><?php echo $this->template->title ?></h2>
+if (! empty($this->template->username->__toString()))
+{
+    ?>
+<div class="row">
+    <div class="col-xs-12 text-right">Hello, <?php echo $this->template->username ?>
+    <?php echo anchor('logout', 'Sign Out', 'class="btn btn-success"')?>
+    </div>
+</div>
+<?php
+}
+?>
+
+<div class="row">
+    <div class="col-xs-12"><h2 class="page-title"><?php echo $this->template->title ?></h2></div>
+</div>
 
       <!--START FULL COLUMN-->
       <div class="full-column page-text">

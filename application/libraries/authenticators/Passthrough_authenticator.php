@@ -20,4 +20,9 @@ class Passthrough_authenticator
     {
         return 'username';
     }
+
+    public function name()
+    {
+        return 'Dummy User';
+    }
 }
