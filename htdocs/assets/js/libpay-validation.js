@@ -9,6 +9,10 @@ $(document).ready(function() {
         
 		  submitHandler: function(validator, form, submitButton) {
 	          var chargeAmount = (100 * $('.hshsl-amount-dollar').val()) + $('.hshsl-amount-cents').val(); 
+			  if (! confirm("Are you sure you want to proceed?\nYour credit card will be charged $" + $('.hshsl-amount-dollar').val() + "." + $('.hshsl-amount-cents').val() +".")) {
+				  return false;
+			  }
+			  
 	          Stripe.createToken({
 	              number: $('.card-number').val(),
 	              cvc: $('.card-cvc').val(),
