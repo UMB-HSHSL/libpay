@@ -6,7 +6,8 @@ require_once APPPATH . 'libraries/LibpayError.php';
 
 
 /**
- * Simple controller parent class requires all requests to come in via SSL.
+ * Simple controller parent class requires all requests to come in via SSL
+ * and instantiates a Logger instance.
  *
  */
 class MY_Controller extends CI_Controller
@@ -20,6 +21,9 @@ class MY_Controller extends CI_Controller
             redirect("https://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}");
             exit();
         }
+
+        // load logger
+        $this->load->library('logger_wrapper', array(), 'logger');
     }
 
     /**

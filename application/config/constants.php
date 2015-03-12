@@ -37,5 +37,17 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
+
+define('LEVEL_OFF',   0);
+define('LEVEL_FATAL', 0b00000001);
+define('LEVEL_ERROR', 0b00000011);
+define('LEVEL_WARN',  0b00000111);
+define('LEVEL_INFO',  0b00001111);
+define('LEVEL_DEBUG', 0b00011111);
+define('LEVEL_TRACE', 0b00111111);
+
+define('LEVEL_SQL', 0b01000000);
+define('LEVEL_ALL', PHP_INT_MAX);
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

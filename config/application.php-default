@@ -4,11 +4,26 @@ $config['stripe_secret_key'] = 'stripe-secret-key';
 $config['stripe_public_key'] = 'stripe-public-key';
 
 
-$config['papertrail_url'] = 'papertrailapp-domain';
-$config['papertrail_port'] = 'papertrailapp-port';
-
 // defaults to Ldap_authenticator
 // $config['authenticator'] = 'Ldap_authenticator';
 
 // array of usernames
 $config['authorized_users'] = array();
+
+// loggers
+$config['loggers'] = array();
+$config['loggers']['Color_logger'] = array(
+    'threshold' => LEVEL_WARN,
+    'path' => '/path/to/log/directory'
+);
+
+$config['loggers']['Sql_logger'] = array(
+    'threshold' => LEVEL_SQL,
+    'path' => '/path/to/log/directory'
+);
+
+$config['loggers']['Papertrail_logger'] = array(
+    'threshold' => LEVEL_WARN,
+    'url' => 'papertrailapp-domain',
+    'port' => 'papertrailapp-port'
+);
