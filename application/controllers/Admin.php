@@ -29,7 +29,7 @@ class Admin extends Authenticated_Controller
         $this->template->content->view('admin/index', $data);
 
         $this->template->javascript->add('//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js');
-        $this->template->foot = '<script>$("#tx_table").dataTable();</script>';
+        $this->template->foot = '<script>$("#tx_table").dataTable({"order" : [[3, "desc"], [0, "asc"]]});</script>';
         $this->template->publish();
     }
 
