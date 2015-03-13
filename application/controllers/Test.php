@@ -280,13 +280,16 @@ class Test extends MY_Controller
 
     public function log()
     {
-        $this->load->model('charge_model');
-        $this->load->model('charge_field_model');
-        $this->db->initialize();
-
-        $cid = $this->charge_model->insert(array('stripe_id' => 'asdadf'));
-        echo "cid is {$cid}";
-
+        echo '<pre>';
+        $this->logger->all('all');
+        $this->logger->trace('trace');
+        $this->logger->debug('debug');
+        $this->logger->info('info');
+        $this->logger->warn('warn');
+        $this->logger->error('error');
+        $this->logger->fatal('fatal');
+        $this->logger->log(LEVEL_SQL, 'select * from foo');
+        echo '</pre>';
     }
 
 }

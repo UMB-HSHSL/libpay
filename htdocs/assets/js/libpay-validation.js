@@ -82,23 +82,31 @@ $(document).ready(function() {
               }
             },
 
-            umid: {
+            umb_barcode: {
                 validators: {
-                    notEmpty: {
-                        message: 'The UMID is required and can\'t be empty'
-                    },
-                    regexp: {
-                    	message: 'The UMID can only contain the following charactures: letters (uppercase or lowercase), numbers, underscore, dash, and period',
-                    	regexp: '^[a-zA-Z0-9_\.-]+$'
+                    digits: {
+                        message: 'The UMID bardcode contains digits only'
                     },
                     stringLength: {
-                        min: 3,
-                        max: 30,
-                        message: 'The UMID must be more than 3 and less than 20 characters long'
-                    }
+                        min: 16,
+                        max: 16,
+                        message: 'The UMID barcode is 16 digits long'
+                    },
+                    /*
+        			callback: {
+        				message: 'The UMID barcode you entered is invalid', 
+        				callback: function(value, validator) {
+        					console.log(value); 
+//        					return false;
+        					console.log(value == '')
+        					console.log(value.match(/^(21427|22001)\d{,11}$/)); 
+        					return (value == '' || value.match(/^(21427|22001)\d{,11}$/)); 
+        				}
+        			}  
+        			*/  
                 }
             },
-
+            
             phone: {
                 validators: {
                     phone: {

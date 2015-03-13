@@ -10,7 +10,7 @@ class Customer
         'hshsl_amount_dollar',
         'hshsl_amount_cents',
         'patron_name',
-        'umid',
+        'umb_barcode',
         'phone',
         'email',
         'instruction',

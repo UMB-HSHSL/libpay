@@ -16,7 +16,7 @@ foreach ($charges as $charge)
 
     $d = date('F j, Y g:i:s a', $charge->stripe_created);
     echo "<tr>
-        <td>", xss_clean($charge->patron_name), "</a></td>
+        <td>", xss_clean($charge->patron_name), "</a> {$charge->umb_barcode}</td>
         <td>{$phone}</td>
         <td class='text-right'>", anchor("admin/details/{$charge->id}", "\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}"), "</span></td>
         <td data-order='{$charge->stripe_created}'>{$d}</td>

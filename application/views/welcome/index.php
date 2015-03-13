@@ -21,7 +21,7 @@
 
     <!-- Fee Category-->
     <div class="form-group">
-      <label class="col-sm-4 control-label" for="textinput">Fee Category</label>
+      <label class="col-sm-4 control-label" for="hshsl_category">Fee Category</label>
       <div class="col-sm-6">
           <select name="hshsl_category" id="hshsl_category" required>
             <option value="Library Fines" selected="selected">Library Fines</option>
@@ -63,26 +63,25 @@
 
   <!-- Patron Name -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Patron Name</label>
+    <label class="col-sm-4 control-label" for="patron_name">Patron Name</label>
     <div class="col-sm-6">
       <input type="text" name="patron_name" placeholder="Patron Name" class="patron_name form-control">
     </div>
   </div>
 
-  <!-- UMID -->
-  <!-- As of July 15, 2013, the UMID may contain letters, numbers and the 3 following special characters
-(underscore, period and/or dash). The UMID must be between 3 and 20 characters in length. -->
+  <!-- UMB Barcode -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Patron UMID</label>
+    <label class="col-sm-4 control-label" for="umb_barcode">UMB Barcode</label>
     <div class="col-sm-6">
-      <input type="text" name="umid" placeholder="umid" class="umid form-control">
+      <input type="text" name="umb_barcode" placeholder="UMB Barcode" class="umb_barcode form-control" aria-describedby="umb_barcode-help-block">
+      <span id="umb_barcode-help-block" class="help-block">Please enter the 16-digit barcode from your UMB ID.</span>
     </div>
   </div>
 
 
   <!-- Phone -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Phone</label>
+    <label class="col-sm-4 control-label" for="phone">Phone</label>
     <div class="col-sm-6">
       <input type="text" name="phone" maxlength="12" placeholder="phone (111-222-3333)" class="phone form-control">
     </div>
@@ -90,7 +89,7 @@
 
   <!-- Email -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">E-mail</label>
+    <label class="col-sm-4 control-label" for="email">E-mail</label>
     <div class="col-sm-6">
       <input type="text" name="email" maxlength="65" placeholder="Email" class="email form-control">
     </div>
@@ -98,7 +97,7 @@
 
    <!-- Instruction -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Special Instructions</label>
+    <label class="col-sm-4 control-label" for="instruction">Special Instructions</label>
     <div class="col-sm-6">
       <textarea name="instruction" placeholder="Special Instructions" class="instruction form-control"></textarea>
     </div>
@@ -111,7 +110,7 @@
 
   <!-- Street -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Street</label>
+    <label class="col-sm-4 control-label" for="street">Street</label>
     <div class="col-sm-6">
       <input type="text" name="street" placeholder="Street" class="address form-control">
     </div>
@@ -119,7 +118,7 @@
 
   <!-- City -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">City</label>
+    <label class="col-sm-4 control-label" for="city">City</label>
     <div class="col-sm-6">
       <input type="text" name="city" placeholder="City" class="city form-control">
     </div>
@@ -127,7 +126,7 @@
 
   <!-- State -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">State</label>
+    <label class="col-sm-4 control-label" for="state">State</label>
     <div class="col-sm-6">
       <input type="text" name="state" maxlength="65" placeholder="State (e.g. MD)" class="state form-control">
     </div>
@@ -135,20 +134,12 @@
 
   <!-- Postcal Code -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Postal Code</label>
+    <label class="col-sm-4 control-label" for="zip">Postal Code</label>
     <div class="col-sm-6">
       <input type="text" name="zip" maxlength="9" placeholder="Postal Code" class="zip form-control">
     </div>
   </div>
 
-  <!-- Country
-  <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Country</label>
-    <div class="col-sm-6">
-      <div class="country bfh-selectbox bfh-countries" name="country" placeholder="Select Country" data-flags="true" data-filter="true"> </div>
-    </div>
-  </div>
--->
    </fieldset>
 
   <fieldset>
@@ -156,7 +147,7 @@
 
     <!-- Card Holder Name -->
     <div class="form-group">
-      <label class="col-sm-4 control-label"  for="textinput">Card Holder's Name</label>
+      <label class="col-sm-4 control-label"  for="cardholdername">Card Holder's Name</label>
       <div class="col-sm-6">
         <input type="text" name="cardholdername" maxlength="70" placeholder="Card Holder Name" class="card-holder-name form-control">
       </div>
@@ -164,7 +155,7 @@
 
     <!-- Card Number -->
     <div class="form-group">
-      <label class="col-sm-4 control-label" for="textinput">Card Number</label>
+      <label class="col-sm-4 control-label" for="cardnumber">Card Number</label>
       <div class="col-sm-6">
         <input type="text" id="cardnumber" maxlength="19" placeholder="Card Number" class="card-number form-control">
         <p class="help-block">The following cards are accepted: <?php echo implode(", ", array_map('ucfirst', config_item('stripe_valid_brands')))?>.</p>
@@ -207,7 +198,7 @@
 
     <!-- CVV -->
     <div class="form-group">
-      <label class="col-sm-4 control-label" for="textinput">CVV/CVV2</label>
+      <label class="col-sm-4 control-label" for="cvv">CVV/CVV2</label>
       <div class="col-sm-3">
         <input type="text" id="cvv" placeholder="CVV" maxlength="4" class="card-cvc form-control">
       </div>

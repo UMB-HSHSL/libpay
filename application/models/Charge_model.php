@@ -85,7 +85,7 @@ class Charge_model extends MY_Model
     {
         $fields = array(
             'patron_name',
-            'umid',
+            'umb_barcode',
             'email',
             'phone',
             'hshsl_category',
