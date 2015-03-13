@@ -38,15 +38,28 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
 
-define('LEVEL_OFF',   0);
-define('LEVEL_FATAL', 0b00000001);
-define('LEVEL_ERROR', 0b00000011);
-define('LEVEL_WARN',  0b00000111);
-define('LEVEL_INFO',  0b00001111);
-define('LEVEL_DEBUG', 0b00011111);
-define('LEVEL_TRACE', 0b00111111);
+/*
+|--------------------------------------------------------------------------
+| Logging Levels
+|--------------------------------------------------------------------------
+|
+| Fatal through trace are cumulative, so trace includes everything above it.
+| other levels may be enabled individually by bitwise-or'ing them,
+| e.g. turn get SQL statement and error logging, do $level = LEVEL_ERROR | LEVEL_SQL.
+|
+| The values are expressed more obviously in binary notation, alas that is only
+| available in PHP >= 5.4.
+|
+*/
+define('LEVEL_OFF',    0); // no logging
+define('LEVEL_FATAL',  1); // fatal only
+define('LEVEL_ERROR',  3); // error + fatal
+define('LEVEL_WARN',   7); // warn + error + fatal
+define('LEVEL_INFO',  15); // info + warn + error + fatal
+define('LEVEL_DEBUG', 31); // debug + info + warn + error + fatal
+define('LEVEL_TRACE', 63); // trace + debug + info + warn + error + fatal
 
-define('LEVEL_SQL', 0b01000000);
+define('LEVEL_SQL',   64);   // sql only
 define('LEVEL_ALL', PHP_INT_MAX);
 
 /* End of file constants.php */
