@@ -71,10 +71,10 @@
 
   <!-- UMB Barcode -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="umb_barcode">UMB Barcode</label>
+    <label class="col-sm-4 control-label" for="umb_barcode">Campus ID Barcode</label>
     <div class="col-sm-6">
-      <input type="text" name="umb_barcode" placeholder="UMB Barcode" class="umb_barcode form-control" aria-describedby="umb_barcode-help-block">
-      <span id="umb_barcode-help-block" class="help-block">Please enter the 16-digit barcode from your UMB ID.</span>
+      <input type="text" name="umb_barcode" placeholder="Campus ID Barcode" class="umb_barcode form-control" aria-describedby="umb_barcode-help-block">
+      <span id="umb_barcode-help-block" class="help-block">Please enter the 16-digit barcode from your Campus ID.</span>
     </div>
   </div>
 

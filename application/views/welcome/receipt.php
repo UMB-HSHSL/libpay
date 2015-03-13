@@ -43,7 +43,7 @@ if ($success) {
     <table class="table table-striped">
     <tbody>
     <tr><td>Patron</td><td class="text-right"><?php echo $details->patron_name ?></td></tr>
-    <tr><td>UMID</td><td class="text-right"><?php echo $details->umid ?></td></tr>
+    <tr><td>Campus ID Barcode</td><td class="text-right"><?php echo $details->umb_barcode ?></td></tr>
     <tr><td>Email</td><td class="text-right"><?php echo $details->email ?></td></tr>
     <tr><td>Phone</td><td class="text-right"><?php echo substr($details->phone, 0, 3) .'-'.substr($details->phone, 3, 3).'-'.substr($details->phone, 6);
      ?></td></tr>
