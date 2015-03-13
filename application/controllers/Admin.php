@@ -25,7 +25,7 @@ class Admin extends Authenticated_Controller
 
         $data['charges'] = $this->charge_model->charges($limit, $offset);
 
-        $this->template->title = 'Lib Pay Charges';
+        $this->template->title = 'Online Payments Received';
         $this->template->content->view('admin/index', $data);
 
         $this->template->javascript->add('//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js');

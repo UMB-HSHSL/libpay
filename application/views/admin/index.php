@@ -6,7 +6,7 @@
 
 <table class="table table-striped" id="tx_table">
 <thead>
-<tr><th>Name (UMID)</th><th>Phone</th><th>Amount</th><th>Date</th><th>Category</th><th>Cleared</th></tr>
+<tr><th>Name</th><th>Phone</th><th>Amount</th><th>Date</th><th>Category</th><th>Cleared</th></tr>
 </thead><tbody>
 <?php
 foreach ($charges as $charge)
@@ -16,10 +16,10 @@ foreach ($charges as $charge)
 
     $d = date('F j, Y g:i:s a', $charge->stripe_created);
     echo "<tr>
-        <td>", xss_clean($charge->patron_name), " ($charge->umid)</a></td>
+        <td>", xss_clean($charge->patron_name), "</a></td>
         <td>{$phone}</td>
         <td class='text-right'>", anchor("admin/details/{$charge->id}", "\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}"), "</span></td>
-        <td>{$d}</td>
+        <td data-order='{$charge->stripe_created}'>{$d}</td>
         <td>{$charge->hshsl_category}</td>
         <td>{$clear}</td>
     </tr>";
@@ -30,7 +30,7 @@ foreach ($charges as $charge)
 </div>
 
 <div class="col-sm-12 text-right">
-    <?php echo form_submit('submit', 'Clear Checked Charges', 'class="btn btn-default"')?>
+    <?php echo form_submit('submit', 'Save', 'class="btn btn-default"')?>
 </div>
 
 </div>
