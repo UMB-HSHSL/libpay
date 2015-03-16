@@ -23,7 +23,9 @@ class MY_Controller extends CI_Controller
         }
 
         // load logger
+        $this->load->add_package_path(APPPATH.'third_party/logger/');
         $this->load->library('logger_wrapper', array(), 'logger');
+        $this->load->remove_package_path();
     }
 
     /**

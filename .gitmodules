@@ -1,0 +1,9 @@
+[submodule "application/third_party/authenticator"]
+	path = application/third_party/authenticator
+	url = git@github.com:UMB-HSHSL/authenticator.git
+[submodule "application/third_party/authorizer"]
+	path = application/third_party/authorizer
+	url = git@github.com:UMB-HSHSL/authorizer.git
+[submodule "application/third_party/logger"]
+	path = application/third_party/logger
+	url = git@github.com:UMB-HSHSL/logger.git
