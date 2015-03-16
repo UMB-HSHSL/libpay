@@ -95,6 +95,9 @@
     }
   </style>
 <![endif]-->
+
+<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/jquery.dataTables.css">
+
 </head>
 <body>
 
