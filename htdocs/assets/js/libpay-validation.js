@@ -8,8 +8,8 @@ $(document).ready(function() {
         },
         
 		  submitHandler: function(validator, form, submitButton) {
-	          var chargeAmount = (100 * $('.hshsl-amount-dollar').val()) + $('.hshsl-amount-cents').val(); 
-			  if (! confirm("Are you sure you want to proceed?\nYour credit card will be charged $" + $('.hshsl-amount-dollar').val() + "." + $('.hshsl-amount-cents').val() +".")) {
+	          var chargeAmount = 100 * $('.hshsl-amount').val(); 
+			  if (! confirm("Are you sure you want to proceed?\nYour credit card will be charged $" + $('.hshsl-amount').val() +".")) {
 				  return false;
 			  }
 			  
@@ -42,38 +42,20 @@ $(document).ready(function() {
         			}
         		}
         	},
-            hshsl_amount_dollar: {
+            hshsl_amount: {
                 validators: {
-                    digits: {
-                        message: 'The amount (dollars) can contain digits only'
-                    },
                     notEmpty: {
-                        message: 'The amount (dollars) is required'
+                        message: 'The amount is required'
                     },
                     callback: {
-                    	message: 'Minimum charge: 50&cent;',
+                    	message: 'Minimum charge: 50&cent;. Please enter dollars and cents, e.g. 3.14.',
                     	callback: function(value, validator) {
-                    		return (100 * value) + validator.getFieldElements('hshsl_amount_cents').val() >= 50;
+                    		return value.toString().match(/^\d+\.\d{2}$/) && (value >= 0.50);
                     	}
                     }
                 }
             },
-            hshsl_amount_cents: {
-                validators: {
-                    digits: {
-                        message: 'The amount (cents) can contain digits only'
-                    },
-                    notEmpty: {
-                        message: 'The amount (cents) is required'
-                    },
-                    callback: {
-                    	message: 'Minimum charge: 50&cent;',
-                    	callback: function(value, validator) {
-                    		return (100 * validator.getFieldElements('hshsl_amount_dollar').val()) + value >= 50;
-                    	}
-                    }
-                }
-            },
+
             patron_name: {
                 validators: {
                     notEmpty: {
@@ -92,18 +74,12 @@ $(document).ready(function() {
                         max: 16,
                         message: 'The UMID barcode is 16 digits long'
                     },
-                    /*
         			callback: {
         				message: 'The UMID barcode you entered is invalid', 
         				callback: function(value, validator) {
-        					console.log(value); 
-//        					return false;
-        					console.log(value == '')
-        					console.log(value.match(/^(21427|22001)\d{,11}$/)); 
-        					return (value == '' || value.match(/^(21427|22001)\d{,11}$/)); 
+        					return (value == '' || value.toString().match(/^(21427|22001)\d{11}$/)); 
         				}
-        			}  
-        			*/  
+        			}    
                 }
             },
             
@@ -192,7 +168,7 @@ $(document).ready(function() {
                         message: 'The credit card number is invalid'
                     },
                     acceptedCreditCard: {
-                        message: 'We only accept Visa and MasterCard'
+                        message: 'We only accept the following: ' + Hshsl.acceptedCards.join(", ")
                     }
                 }
             },
@@ -269,10 +245,6 @@ $(document).ready(function() {
 		                message: 'The cvv is required and can\'t be empty'
 		            },
 		            cvv: {
-		                message: 'The value is not a valid CVV',
-		                creditCardField: 'cardnumber'
-		            },
-		            acceptedCvv: {
 		                message: 'The value is not a valid CVV',
 		                creditCardField: 'cardnumber'
 		            },

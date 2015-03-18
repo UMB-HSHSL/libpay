@@ -76,8 +76,10 @@ class Charge_model extends MY_Model
 
     /**
      * Pivot the charge_field table to return objects with the following fields:
-     * patron_name, umid, hshsl_category, hshshl_category_ohter, hshsl_amount_dollar,
-     * hshsl_amount_cents, hshsl_cleared, stripe_id, stripe_created, stripe_status.
+     *
+     * patron_name, umb_barcode, email, phone, hshsl_category, hshshl_category_other,
+     * hshsl_amount, hshsl_cleared, hshsl_cleared_by, hshsl_cleared_date, invoice_no,
+     * instruction, stripe_id, stripe_created, stripe_status.
      *
      * @param array $ids
      */
@@ -90,8 +92,7 @@ class Charge_model extends MY_Model
             'phone',
             'hshsl_category',
             'hshsl_category_other',
-            'hshsl_amount_dollar',
-            'hshsl_amount_cents',
+            'hshsl_amount',
             'hshsl_cleared',
             'hshsl_cleared_by',
             'hshsl_cleared_date',

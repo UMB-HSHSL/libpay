@@ -61,12 +61,7 @@ class Welcome extends MY_Controller
     {
         $rules = array(
             array(
-                'field' => 'hshsl_amount_dollar',
-                'label' => '',
-                'rules' => 'required'
-            ),
-            array(
-                'field' => 'hshsl_amount_cents',
+                'field' => 'hshsl_amount',
                 'label' => '',
                 'rules' => 'required'
             ),
@@ -111,7 +106,7 @@ class Welcome extends MY_Controller
                 $this->session->set_flashdata('stripe_success', false);
 
         	    $res = $this->libpay->pay(
-        	        ($this->input->post('hshsl_amount_dollar') * 100) + $this->input->post('hshsl_amount_cents'),
+        	        $this->input->post('hshsl_amount') * 100,
         	        $this->input->post('stripeToken'),
         	        $customer
         	    );

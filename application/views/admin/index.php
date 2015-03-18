@@ -18,7 +18,7 @@ foreach ($charges as $charge)
     echo "<tr>
         <td>", xss_clean($charge->patron_name), "</a> {$charge->umb_barcode}</td>
         <td>{$phone}</td>
-        <td class='text-right'>", anchor("admin/details/{$charge->id}", "\${$charge->hshsl_amount_dollar}.{$charge->hshsl_amount_cents}"), "</span></td>
+        <td class='text-right'>", anchor("admin/details/{$charge->id}", "\${$charge->hshsl_amount}"), "</span></td>
         <td data-order='{$charge->stripe_created}'>{$d}</td>
         <td>{$charge->hshsl_category}</td>
         <td>{$clear}</td>

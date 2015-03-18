@@ -4,6 +4,7 @@
 <label for="test-expired"><input type="radio" name="foo" id="test-expired"> expired</label><br />
 <label for="test-error"  ><input type="radio" name="foo" id="test-error"  > error</label><br />
 <label for="test-amex"   ><input type="radio" name="foo" id="test-amex"   > amex</label><br />
+<label for="test-disc"   ><input type="radio" name="foo" id="test-disc"   > discover</label><br />
 
 
 <?php echo validation_errors(); ?>
@@ -74,9 +75,7 @@
     <label class="col-sm-4 control-label" for="textinput">Payment Amount</label>
     <div class="col-sm-6">
         <div class="form-inline">
-            $ <input type="text" size="3" name="hshsl_amount_dollar" placeholder="" class="amount form-control hshsl-amount-dollar" value="12">
-            <span>.</span>
-            <input type="text" size="1" maxlength="2" name="hshsl_amount_cents" placeholder="" class="amount form-control hshsl-amount-cents" value="34">
+            $ <input type="text" size="3" name="hshsl_amount" placeholder="" class="amount form-control hshsl-amount" value="3.14">
         </div>
     </div>
   </div>
@@ -256,6 +255,9 @@ $('#test-cvc'    ).click(function(){ $('#cardnumber').val('4000000000000127'); }
 $('#test-expired').click(function(){ $('#cardnumber').val('4000000000000069'); });
 $('#test-error'  ).click(function(){ $('#cardnumber').val('4000000000000119'); });
 $('#test-amex'   ).click(function(){ $('#cardnumber').val('378282246310005'); $('#cvv').val('1234'); });
+$('#test-disc'   ).click(function(){ $('#cardnumber').val('6011111111111117'); });
+
+
 
 $('input[name="foo"]').click(function(){$('.submit-button').prop('disabled', false); });
 

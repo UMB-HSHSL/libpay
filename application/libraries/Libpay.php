@@ -142,7 +142,7 @@ class Libpay
         $message .= "\n\nYour Name: " . $_POST['patron_name'];
         $message .= "\nYour UMID: " . $_POST['umid'];
         $message .= "\nAmount: $";
-        $message .= $_POST['hshsl_amount_dollar'] . "." . $_POST['hshsl_amount_cents'];
+        $message .= $_POST['hshsl_amount'];
         $message .= "\nCategory: " . $_POST['hshsl_category'];
         $message .= "\nInvoice No. (If Applicable): " . $_POST['invoice_no'];
         $message .= "\nSpecial Instructions. (If Applicable): " . $_POST['instruction'];

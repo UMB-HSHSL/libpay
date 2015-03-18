@@ -32,7 +32,7 @@ function cleared($charge)
 {
     $str = '&nbsp;';
     if ($charge->hshsl_cleared) {
-        $str = date("Y/m/d g:i:s a", $charge->hshsl_cleared_date) . " by " . $charge->hshsl_cleared_by;
+        $str = date('F j, Y g:i:s a', $charge->hshsl_cleared_date) . " by " . $charge->hshsl_cleared_by;
     }
     return $str;
 }
