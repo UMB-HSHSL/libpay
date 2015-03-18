@@ -24,7 +24,8 @@ function cc_img($str)
  */
 function cc_valid_brand($str)
 {
-    return in_array(strtolower($str), config_item('stripe_valid_brands'));
+    $str = str_replace(' ', '_', strtolower($str));
+    return in_array($str, config_item('stripe_valid_brands'));
 }
 
 function cleared($charge)
