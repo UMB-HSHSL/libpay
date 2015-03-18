@@ -128,7 +128,7 @@ class Welcome extends MY_Controller
                 $this->session->set_flashdata('stripe_exception', $e);
             }
             catch (Exception $e) {
-                $this->libpay->log_exception($e->getMessage(), $e);
+                $this->logger->error($e->getMessage(), $e);
                 $le = new LibpayException('There was an error and your transaction could not be processed');
                 $this->session->set_flashdata('stripe_exception', new LibpayError($le));
             }

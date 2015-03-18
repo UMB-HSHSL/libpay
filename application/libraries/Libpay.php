@@ -12,16 +12,8 @@ class Libpay
     public function __construct()
     {
         $this->ci =& get_instance();
-    }
 
-    public function log_exception($type, $msg, $e = null)
-    {
-        $this->ci->load->library('papertraillogger');
-        $this->ci->papertraillogger->write(
-            array(
-                array('type' => $type, 'body' => $msg)
-            )
-        );
+        $this->logger = Logger::getLogger(get_class($this));
     }
 
     public function log_transaction(Stripe_Charge $charge, Customer $customer)
@@ -97,7 +89,7 @@ class Libpay
 
             $error_code = $this->error_code($error->type);
 
-            $this->log_exception($error->type, $error->message);
+            $this->logger->error("{$error->type} {$error->message}");
             throw new LibpayException("Your payment could not be processed at this time. Error Code <strong>{$error_code}</strong>.");
         }
         // Authentication with Stripe's API failed; changed API keys?
@@ -107,7 +99,7 @@ class Libpay
 
             $error_code = $this->error_code($error->type);
 
-            $this->log_exception($error->type, $error->message);
+            $this->logger->error("{$error->type} {$error->message}");
             throw new LibpayException("Your payment could not be processed at this time. Error Code <strong>{$error_code}</strong>.");
         }
 
@@ -118,7 +110,7 @@ class Libpay
 
             $error_code = $this->error_code($error->type);
 
-            $this->log_exception($error->type, $error->message);
+            $this->logger->error("{$error->type} {$error->message}");
             throw new LibpayException("Your payment could not be processed at this time. Error Code <strong>{$error_code}</strong>.");
         }
 
@@ -130,7 +122,7 @@ class Libpay
 
             $error_code = $this->error_code($error->type);
 
-            $this->log_exception($error->type, $error->message);
+            $this->logger->error("{$error->type} {$error->message}");
             throw new LibpayException("Your payment could not be processed at this time. Error Code <strong>{$error_code}</strong>.");
         }
 
