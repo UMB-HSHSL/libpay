@@ -280,15 +280,22 @@ class Test extends MY_Controller
 
     public function log()
     {
+        try {
+            throw new Exception('boom chackalacka');
+        }
+        catch (Exception $e)
+        {
+            $this->logger->error('caught Exception', $e);
+        }
         echo '<pre>';
-        $this->logger->all('all');
-        $this->logger->trace('trace');
-        $this->logger->debug('debug');
-        $this->logger->info('info');
-        $this->logger->warn('warn');
-        $this->logger->error('error');
-        $this->logger->fatal('fatal');
-        $this->logger->log(LEVEL_SQL, 'select * from foo');
+        //$this->logger->all('all');
+        $this->logger->trace('a trace');
+        $this->logger->debug('a debug');
+        $this->logger->info('a info');
+        $this->logger->warn('a warn');
+        $this->logger->error('a error');
+        $this->logger->fatal('a fatal');
+//        $this->logger->log(LEVEL_SQL, 'select * from foo');
         echo '</pre>';
     }
 
