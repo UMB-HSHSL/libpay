@@ -24,7 +24,7 @@ require_once FCPATH . 'config/application.php';
  * HSHSL only accepts Visa and MasterCard. This value configures server-side
  * validation only. To enable other brands
  */
-$config['stripe_valid_brands'] = array('visa', 'mastercard');
+$config['stripe_valid_brands'] = array('visa', 'mastercard', 'american_express');
 
 
 // unknown error code: 400
