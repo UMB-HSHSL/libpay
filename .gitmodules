@@ -4,6 +4,6 @@
 [submodule "application/third_party/authorizer"]
 	path = application/third_party/authorizer
 	url = git@github.com:UMB-HSHSL/authorizer.git
-[submodule "application/third_party/logger"]
-	path = application/third_party/logger
-	url = git@github.com:UMB-HSHSL/logger.git
+[submodule "application/third_party/log4php"]
+	path = application/third_party/log4php
+	url = git://git.apache.org/logging-log4php.git

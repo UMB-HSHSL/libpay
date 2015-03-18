@@ -4,6 +4,10 @@ require_once APPPATH . 'libraries/LibpayException.php';
 require_once APPPATH . 'libraries/LibpayError.php';
 
 
+require_once APPPATH . 'third_party/log4php/src/main/php/Logger.php';
+require_once APPPATH . 'libraries/LoggerLayoutPatternColor.php';
+
+
 
 /**
  * Simple controller parent class requires all requests to come in via SSL
@@ -12,6 +16,8 @@ require_once APPPATH . 'libraries/LibpayError.php';
  */
 class MY_Controller extends CI_Controller
 {
+    protected $logger = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -22,10 +28,9 @@ class MY_Controller extends CI_Controller
             exit();
         }
 
-        // load logger
-        $this->load->add_package_path(APPPATH.'third_party/logger/');
-        $this->load->library('logger_wrapper', array(), 'logger');
-        $this->load->remove_package_path();
+        // configure logging
+        Logger::configure(FCPATH . 'config/log4php.php');
+        $this->logger = Logger::getLogger(get_class($this));
     }
 
     /**

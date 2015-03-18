@@ -1,0 +1,42 @@
+<?php
+
+// sample logger config file
+//
+// default logger: log everything to a file
+// papertrail logger: log >= warn to papertrail
+
+return array(
+    'rootLogger' => array(
+        'appenders' => array('default', 'papertrail'),
+    ),
+    'appenders' => array(
+        'default' => array(
+            'class' => 'LoggerAppenderFile',
+            'layout' => array(
+                'class' => 'LoggerLayoutPatternColor',
+                'params' => array(
+                  'conversionPattern' => '%d [%logger#%L] %-5level %message%n%ex'
+                ),
+            ),
+            'params' => array(
+            	'file' => '/full/path/to/writable/file.log',
+            	'append' => true
+            )
+        ),
+        'papertrail' => array(
+            'class' => 'LoggerAppenderSocket',
+            'threshold' => 'warn',
+            'layout' => array(
+                'class' => 'LoggerLayoutPattern',
+                'params' => array(
+                  'conversionPattern' => date('M d H:i:s ') . 'Libpay ' . ENVIRONMENT . ' %message',
+                ),
+            ),
+            'params' => array(
+            	'remoteHost' => 'udp://your.papertrailapp.com',
+            	'port' => your-papertrailapp-port,
+            )
+        )
+
+    )
+);
