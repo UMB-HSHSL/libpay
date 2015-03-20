@@ -296,4 +296,61 @@ class Test extends MY_Controller
         echo '</pre>';
     }
 
+    private function data()
+    {
+        $min = strtotime('2012-01-01');
+        $max = time();
+
+        $names = file('/Users/zburke/archive/names.txt');
+        $categories = array(
+            'Library Fines',
+            'Library Fines',
+            'Library Fines',
+            'Library Fines',
+            'Library Fines',
+            'Library Fines',
+            'Classroom Rental',
+            'Classroom Rental',
+            'Membership',
+            '3D Printing',
+            '3D Printing',
+            '3D Printing',
+            'Other',
+        );
+
+        $this->load->model('charge_model');
+        $this->load->model('charge_field_model');
+
+        for ($i = 0; $i < 365 * 3 * 10; $i++) {
+            $stamp = mt_rand($min, $max);
+            $amount = mt_rand(150, 15000);
+            $name = $names[mt_rand(0, count($names) - 1)];
+            $category = $categories[mt_rand(0, count($categories) - 1)];
+
+            $cid = $this->charge_model->insert(array('stripe_id' => 'fake-stripe-id'));
+
+            $this->charge_field_model->insert($cid, 'stripe_id', 'fake-stripe-id');
+            $this->charge_field_model->insert($cid, 'stripe_object', 'charge');
+            $this->charge_field_model->insert($cid, 'stripe_created', $stamp);
+            $this->charge_field_model->insert($cid, 'stripe_paid', 1);
+            $this->charge_field_model->insert($cid, 'stripe_status', 'paid');
+            $this->charge_field_model->insert($cid, 'stripe_amount', $amount);
+            $this->charge_field_model->insert($cid, 'stripe_description', "{$name} | {$category}");
+            $this->charge_field_model->insert($cid, 'hshsl_category', $category);
+            $this->charge_field_model->insert($cid, 'hshsl_amount', sprintf("%.2f", $amount / 100));
+            $this->charge_field_model->insert($cid, 'patron_name', $name);
+            $this->charge_field_model->insert($cid, 'umb_barcode', '21427' . mt_rand(10000, 99999));
+            $this->charge_field_model->insert($cid, 'phone', mt_rand(100, 999) . mt_rand(100, 999) . mt_rand(1000, 9999));
+            $this->charge_field_model->insert($cid, 'email', str_replace(' ', '', $name) . '@example.com');
+            $this->charge_field_model->insert($cid, 'street', '601 West Lombard Street');
+            $this->charge_field_model->insert($cid, 'city', 'Baltimore');
+            $this->charge_field_model->insert($cid, 'state', 'MD');
+            $this->charge_field_model->insert($cid, 'zip', '21201');
+
+        }
+
+        echo "DONE";
+
+    }
+
 }
