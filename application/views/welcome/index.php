@@ -45,7 +45,7 @@
 
   <!-- Invoice number -->
   <div class="form-group">
-    <label class="col-sm-4 control-label" for="textinput">Invoice or Barcode No.</label>
+    <label class="col-sm-4 control-label" for="textinput">Invoice No.</label>
     <div class="col-sm-6">
       <input type="text" name="invoice_no" placeholder="If applicable" class="invoice form-control">
     </div>
@@ -74,7 +74,7 @@
     <label class="col-sm-4 control-label" for="umb_barcode">Campus ID Barcode</label>
     <div class="col-sm-6">
       <input type="text" name="umb_barcode" placeholder="Campus ID Barcode" class="umb_barcode form-control" aria-describedby="umb_barcode-help-block">
-      <span id="umb_barcode-help-block" class="help-block">Please enter the 16-digit barcode from your Campus ID.</span>
+      <span id="umb_barcode-help-block" class="help-block">For faculty, staff, students, and affiliates only; please enter the 14-16-digit barcode from your Campus ID.</span>
     </div>
   </div>
 

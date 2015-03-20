@@ -66,18 +66,10 @@ $(document).ready(function() {
 
             umb_barcode: {
                 validators: {
-                    digits: {
-                        message: 'The UMID bardcode contains digits only'
-                    },
-                    stringLength: {
-                        min: 16,
-                        max: 16,
-                        message: 'The UMID barcode is 16 digits long'
-                    },
         			callback: {
         				message: 'The UMID barcode you entered is invalid', 
         				callback: function(value, validator) {
-        					return (value == '' || value.toString().match(/^(21427|22001)\d{11}$/)); 
+        					return (value == '' || value.toString().search(/^(21427|22001)\d{9,11}$/) != -1); 
         				}
         			}    
                 }
