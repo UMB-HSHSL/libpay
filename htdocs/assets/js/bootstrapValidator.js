@@ -1352,7 +1352,7 @@
          * @returns {Boolean}
          */
         validate: function(validator, $field, options) {
-            var value = $field.val();
+            var value = $field.val().trim();
             if (value == '') {
                 return true;
             }

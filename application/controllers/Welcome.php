@@ -62,32 +62,47 @@ class Welcome extends MY_Controller
         $rules = array(
             array(
                 'field' => 'hshsl_amount',
-                'label' => '',
+                'label' => 'Payment Amount',
                 'rules' => 'required'
             ),
             array(
                 'field' => 'hshsl_category',
-                'label' => '',
+                'label' => 'Fee Category',
                 'rules' => 'required'
             ),
             array(
                 'field' => 'patron_name',
-                'label' => '',
+                'label' => 'Patron Name',
+                'rules' => 'required'
+            ),
+            array(
+                'field' => 'email',
+                'label' => 'Email',
+                'rules' => 'required|trim'
+            ),
+            array(
+                'field' => 'phone',
+                'label' => 'Phone',
                 'rules' => 'required'
             ),
             array(
                 'field' => 'street',
-                'label' => '',
+                'label' => 'Street',
                 'rules' => 'required'
             ),
             array(
                 'field' => 'city',
-                'label' => '',
+                'label' => 'City',
+                'rules' => 'required'
+            ),
+            array(
+                'field' => 'state',
+                'label' => 'State',
                 'rules' => 'required'
             ),
             array(
                 'field' => 'zip',
-                'label' => '',
+                'label' => 'Postal Code',
                 'rules' => 'required'
             ),
             array(
