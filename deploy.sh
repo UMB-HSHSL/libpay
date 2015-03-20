@@ -79,10 +79,6 @@ if [[ ! -d $SRC/$REPO-$TAG ]]; then
     echo "exporting release $TAG..."
     mkdir -p $DIST/$REPO-$TAG
     git archive $TAG | tar -x -C $DIST/$REPO-$TAG
-
-    echo "pulling in submodules..."
-    cd $DIST/$REPO-$TAG
-    git submodule update --init --recursive
 else
     echo "release $TAG already in place; deploying existing copy"
 fi
