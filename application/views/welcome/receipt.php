@@ -17,7 +17,7 @@ if ($success) {
 <div class="payment-success">
 <div class="row row-centered text-center">
   <div class="col-xs-12 col-md-offset-0 text-center">
-    <h3>$<?php echo (int) ($receipt->amount / 100), '.', (int) ($receipt->amount % 100)  ?> at <?php echo $account->business_name ?></h3>
+    <h3>$<?php printf("%.2f", $receipt->amount / 100) ?> at <?php echo $account->business_name ?></h3>
     <hr>
   </div>
 </div>
