@@ -74,7 +74,7 @@
     <label class="col-sm-4 control-label" for="umb_barcode">Campus Barcode</label>
     <div class="col-sm-6">
       <input type="text" name="umb_barcode" placeholder="Campus Barcode" class="umb_barcode form-control" aria-describedby="umb_barcode-help-block">
-      <span id="umb_barcode-help-block" class="help-block">For faculty, staff, students, and affiliates only; please enter the 14-digit barcode number from your Campus ID.</span>
+      <span id="umb_barcode-help-block" class="help-block">Please enter the 14-digit barcode number right below the barcode on the back of your Campus ID card if you have one.</span>
     </div>
   </div>
 
