@@ -1,5 +1,8 @@
 <?php
 
+// name of this application, for logging
+define('APPLICATION', 'Libpay');
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
