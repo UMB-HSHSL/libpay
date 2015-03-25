@@ -69,7 +69,7 @@ $(document).ready(function() {
         			callback: {
         				message: 'The UMID barcode you entered is invalid', 
         				callback: function(value, validator) {
-        					return (value == '' || value.toString().search(/^(21427|22001)\d{9,11}$/) != -1); 
+        					return (value == '' || (/^(21427|22001)\d{9}$/).test(value)); 
         				}
         			}    
                 }
