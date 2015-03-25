@@ -25,7 +25,7 @@ if ($success) {
 </div>
 <div class="row row-centered text-center">
   <div class="col-xs-12 center-block">
-    <?php echo cc_img($receipt->card->brand) ?> <?php echo $receipt->card->last4 ?>
+    <?php echo cc_img($receipt->source->brand) ?> <?php echo $receipt->source->last4 ?>
   </div>
 </div>
 

@@ -1,6 +1,6 @@
 <div class="row">
-  <div class="col-xs-1 center-block"><?php echo cc_img($receipt->card->brand) ?></div>
-  <div class="col-xs-11"><h1>$<?php echo (int) ($receipt->amount / 100), '.', (int) ($receipt->amount % 100)  ?></h1></div>
+  <div class="col-xs-1 center-block"><?php echo cc_img($receipt->source->brand) ?></div>
+  <div class="col-xs-11"><h1>$<?php printf("%.2f", $receipt->amount / 100) ?></h1></div>
 </div>
 <div class="row">
   <div class="col-xs-11 col-xs-offset-1 center-block">&mdash;<?php echo $charge->stripe_id ?></div>
@@ -10,7 +10,7 @@
 <div class="row">
   <div class="col-xs-12 center-block">
   <dl class="libpay_details">
-    <dt>Amount</dt><dd>$<?php echo (int) ($receipt->amount / 100), '.', (int) ($receipt->amount % 100)  ?></dd>
+    <dt>Amount</dt><dd>$<?php printf("%.2f", $receipt->amount / 100) ?></dd>
     <dt>Date</dt><dd><?php echo date('F j, Y g:i:s a', $receipt->created) ?></dd>
     <dt>Status</dt><dd><?php echo $receipt->status ?></dd>
     <dt>Description</dt><dd><?php echo xss_clean($charge->hshsl_category); if ($charge->hshsl_category_other) echo xss_clean("({$charge->hshsl_category_other})"); ?></dd>
