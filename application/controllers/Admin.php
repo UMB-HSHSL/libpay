@@ -16,6 +16,13 @@ class Admin extends Authenticated_Controller
         $this->load->library('libpay');
     }
 
+
+    /**
+     * Show summary of all transactions.
+     *
+     * @param number $limit number of transactions to show
+     * @param number $offset offset in transaction list
+     */
     public function index($limit = 0, $offset = 0)
     {
         $this->load->library('form_validation');
@@ -34,6 +41,11 @@ class Admin extends Authenticated_Controller
     }
 
 
+
+    /**
+     * Show transaction details.
+     * @param int $id HSHSL transaction details
+     */
     public function details($id)
     {
         $this->load->model('charge_model');
@@ -47,6 +59,31 @@ class Admin extends Authenticated_Controller
         $this->template->publish();
     }
 
+
+
+    /**
+     * Show a duplicate receipt
+     * @param int $id HSHSL transaction ID
+     */
+    public function receipt($id)
+    {
+        $this->load->model('charge_model');
+        $this->load->model('charge_field_model');
+
+        $data['success'] = true;
+        $data['account'] = Stripe_Account::retrieve();
+        $data['details'] = $this->charge_model->charge($id);
+        $data['receipt'] = Stripe_Charge::retrieve($data['details']->stripe_id);
+
+        $this->template->title = 'Lib Pay Duplicate Receipt';
+        $this->template->content->view('welcome/receipt', $data);
+        $this->template->publish();
+    }
+
+
+    /**
+     * Mark transcations as cleared in Aleph. Record the date and the user who cleared them.
+     */
     public function clear()
     {
         $ids = $this->input->post('id');
