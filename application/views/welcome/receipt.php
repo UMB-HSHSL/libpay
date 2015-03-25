@@ -13,6 +13,8 @@
 
 <?php
 if ($success) {
+
+    $details->phone = str_replace(array('-', '.'), '', $details->phone);
 ?>
 <div class="payment-success">
 <div class="row row-centered text-center">
@@ -48,7 +50,7 @@ if ($success) {
     <tr><td>Phone</td><td class="text-right"><?php echo substr($details->phone, 0, 3) .'-'.substr($details->phone, 3, 3).'-'.substr($details->phone, 6);
      ?></td></tr>
     <tr><td>Description</td><td class="text-right"><?php echo $details->hshsl_category; if ($details->hshsl_category_other) echo "({$details->hshsl_category_other})"; ?></td></tr>
-    <tr><td><strong>Total</strong></td><td class="text-right">$<?php echo (int) ($receipt->amount / 100), '.', (int) ($receipt->amount % 100)  ?></td></tr>
+    <tr><td><strong>Total</strong></td><td class="text-right">$<?php printf("%.2f", $receipt->amount / 100) ?></td></tr>
     </tbody>
     </table>
     </div>
