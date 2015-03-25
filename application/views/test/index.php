@@ -92,8 +92,8 @@
   <div class="form-group">
     <label class="col-sm-4 control-label" for="umb_barcode">UMB Barcode</label>
     <div class="col-sm-6">
-      <input type="text" name="umb_barcode" placeholder="UMB Barcode" class="umb_barcode form-control" aria-describedby="umb_barcode-help-block" value="2142711111111111">
-      <span id="umb_barcode-help-block" class="help-block">Please enter the 16-digit barcode from your UMB ID.</span>
+      <input type="text" name="umb_barcode" placeholder="UMB Barcode" class="umb_barcode form-control" aria-describedby="umb_barcode-help-block" value="21427111111111">
+      <span id="umb_barcode-help-block" class="help-block">Please enter the 14-digit barcode from your UMB ID.</span>
     </div>
   </div>
 
