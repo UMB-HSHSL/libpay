@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-require_once APPPATH . 'libraries/Stripe.php';
 
 class Login extends MY_Controller
 {
@@ -28,7 +27,10 @@ class Login extends MY_Controller
 
     private function authenticate()
     {
-        $this->load->library('authenticators/' . config_item('authenticator'), array(), 'authenticator');
+        // load requested authenticator and check if the user is already authenticated.
+        $this->load->add_package_path(APPPATH.'third_party/authenticator/');
+        $this->load->library(config_item('authenticator'), array(), 'authenticator');
+        $this->load->remove_package_path();
 
         try {
             $this->authenticator->authenticate($this->input->post('username'), $this->input->post('password'));
