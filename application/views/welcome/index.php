@@ -74,7 +74,7 @@
     <label class="col-sm-4 control-label" for="umb_barcode">Campus Barcode</label>
     <div class="col-sm-6">
       <input type="text" name="umb_barcode" placeholder="Campus Barcode" class="umb_barcode form-control" aria-describedby="umb_barcode-help-block">
-      <span id="umb_barcode-help-block" class="help-block">Please enter the 14-digit barcode number right below the barcode on the back of your Campus ID card if you have one.</span>
+      <span id="umb_barcode-help-block" class="help-block small">Please enter the 14-digit barcode number right below the barcode on the back of your Campus ID card if you have one.</span>
     </div>
   </div>
 
@@ -158,7 +158,7 @@
       <label class="col-sm-4 control-label" for="cardnumber"><span class="text-error">*</span> Card Number</label>
       <div class="col-sm-6">
         <input type="text" id="cardnumber" maxlength="19" placeholder="Card Number" class="card-number form-control" required>
-        <p class="help-block">The following cards are accepted: <?php echo implode(", ", array_map('ucwords', array_map(create_function('$i', 'return str_replace("_", " ", $i);'), config_item('stripe_valid_brands'))))?>.</p>
+        <p class="help-block small">The following cards are accepted: <?php echo implode(", ", array_map('ucwords', array_map(create_function('$i', 'return str_replace("_", " ", $i);'), config_item('stripe_valid_brands'))))?>.</p>
         </div>
     </div>
 
