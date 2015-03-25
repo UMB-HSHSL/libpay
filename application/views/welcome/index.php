@@ -56,7 +56,7 @@
     <label class="col-sm-4 control-label" for="textinput"><span class="text-error">*</span> Payment Amount</label>
     <div class="col-sm-6">
         <div class="form-inline">
-            $ <input type="text" size="3" name="hshsl_amount" placeholder="0.00" class="amount form-control hshsl-amount">
+            $ <input type="text" size="7" name="hshsl_amount" placeholder="0.00" class="amount form-control hshsl-amount">
         </div>
     </div>
   </div>
