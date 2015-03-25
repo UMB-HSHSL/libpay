@@ -8,6 +8,9 @@ to our own servers, so we do not need to worry about PCI compliance.
 
 The backend is written in PHP 5.2.x using CodeIgniter 2.2.1.
 
+The components log4php, hshsl-authenticator, and hshsl-authorizer are
+configured as Git subtrees installed into application/third_party.
+
 Manifest
 ===============
 application - application PHP code
@@ -31,15 +34,22 @@ Subsequent releases:
 
 
 
-Used Components
+Components
 ===============
 
-=> Stripe - http://stripe.com
+Stripe - http://stripe.com
 
-=> jQuery (v1.11.0) - http://jquery.com/
+jQuery (v1.11.0) - http://jquery.com/
 
-=> Bootstrap (v3.1.1) - http://getbootstrap.com/
+Bootstrap (v3.1.1) - http://getbootstrap.com/
 
-=> Bootstrap Form Helper (v2.3.0) - http://bootstrapformhelpers.com/
+Bootstrap Form Helper (v2.3.0) - http://bootstrapformhelpers.com/
 
-=> Bootstrap Validator (v0.4.4) - http://bootstrapvalidator.com/
+Bootstrap Validator (v0.4.4) - http://bootstrapvalidator.com/
+
+Log4php - http://logging.apache.org/log4php/
+
+HSHSL-Authenticator - https://github.com/umb-hshsl/authenticator
+
+HSHSL-Authorizer - https://github.com/umb-hshsl/authorizer
+
