@@ -12,6 +12,8 @@
 foreach ($charges as $charge)
 {
     $clear = ($charge->hshsl_cleared ? '&#x2713;' : "<input type='checkbox' name='id[]' value='{$charge->id}'>");
+    $charge->phone = str_replace(array('-', '.'), '', $charge->phone);
+
     $phone = substr($charge->phone, 0, 3) . '-' . substr($charge->phone, 3, 3) . '-' . substr($charge->phone, 6, 4);
 
     $d = date('F j, Y g:i:s a', $charge->stripe_created);
